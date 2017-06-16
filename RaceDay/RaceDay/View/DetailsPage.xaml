@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:RaceDay.Converters;assembly=RaceDay"
+             x:Class="RaceDay.View.DetailsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:EnableLabelConverter x:Key="EnableLabel" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical" Padding="10">
+                <Label Text="{Binding EventInfo.Date, StringFormat='{0:M/d/yyyy}'}" FontAttributes="Bold" FontSize="Medium" Margin="0" />
+                <Label Text="{Binding EventInfo.Name}" FontSize="Medium" Margin="0" />
+                <Label Text="{Binding EventInfo.Location}" Margin="0" x:Name="LocationLabel" />
+                <Label Text="{Binding EventInfo.Url}" Margin="0" x:Name="UrlLabel" TextColor="#03A9F4" />
+                <Label Text="{Binding EventInfo.Description}" Margin="0" x:Name="DescriptionLabel" />
+
+                <StackLayout Orientation="Horizontal" Margin="0, 10, 0, 0">
+                    <Label FontSize="Medium" Margin="0, 0, 10, 0" TextColor="{Binding EventInfo.Attending, Converter={StaticResource EnableLabel}}">I am Racing:</Label>
+                    <Switch x:Name="AttendingSwitch" IsToggled="{Binding EventInfo.Attending}"></Switch>
+                </StackLayout>
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HeightRequest="50" />
+                <ListView x:Name="RacersListView" ItemsSource="{Binding Participants}" HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding ImageUrl}" Margin="0, 5, 10, 5" HeightRequest="50" WidthRequest="50" />
+                                    <Label Text="{Binding Name}" FontSize="Medium" VerticalOptions="Center" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

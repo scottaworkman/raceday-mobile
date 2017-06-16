@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:RaceDay.Helpers"
+             x:Class="RaceDay.View.AddEvent"
+             Title="Enter New Event">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="plainButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#666" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+            <Style x:Key="okButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#03A9F4" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+            <Style x:Key="label" TargetType="Label">
+                <Setter Property="TextColor" Value="#999" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+            </Style>
+            <Style x:Key="field" TargetType="Entry">
+                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="datePicker" TargetType="controls:FontDatePicker">
+                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="multiLine" TargetType="controls:ExpandableEditor">
+                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid x:Name="createGrid" RowSpacing="2" ColumnSpacing="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ScrollView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <StackLayout Padding="10">
+                    <Label Text="Name" Style="{StaticResource label}" />
+                    <Entry x:Name="txtEventName" HorizontalOptions="Fill" Placeholder="Event Name" Style="{StaticResource field}" Text="{Binding EventInfo.Name}" />
+                    <Label Text="Date" Style="{StaticResource label}" />
+                    <controls:FontDatePicker x:Name="txtDate" Style="{StaticResource datePicker}" Date="{Binding EventInfo.Date}" />
+                    <Label Text="Location" Style="{StaticResource label}" />
+                    <Entry x:Name="txtLocation" HorizontalOptions="Fill" Placeholder="City, State or Venue" Style="{StaticResource field}" Text="{Binding EventInfo.Location}" />
+                    <Label Text="Url" Style="{StaticResource label}" />
+                    <Entry x:Name="txtUrl" HorizontalOptions="Fill" Keyboard="Url" Placeholder="http://www.xyz.com/eventinfo" Style="{StaticResource field}" Text="{Binding EventInfo.Url}" />
+                    <Label Text="Description" Style="{StaticResource label}" />
+                    <controls:ExpandableEditor x:Name="txtDescription" Placeholder="Event Details" HorizontalOptions="Fill" Style="{StaticResource multiLine}" Text="{Binding EventInfo.Description}" />
+                </StackLayout>
+            </ScrollView>
+            <Button x:Name="btnCancel" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Cancel" Style="{StaticResource plainButton}" />
+            <Button x:Name="btnOk" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" Text="Save" Style="{StaticResource okButton}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
