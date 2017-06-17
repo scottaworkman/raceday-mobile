@@ -58,6 +58,11 @@ namespace RaceDay.View
                 return;
             }
 
+            // URL must start with http: or https:
+            //
+            if (vm.EventInfo.Url.ToLower().StartsWith("http://") == false && vm.EventInfo.Url.ToLower().StartsWith("https://") == false)
+                vm.EventInfo.Url = "http://" + vm.EventInfo.Url;
+
             // Validation passed, call the command
             //
             if (vm.AddEventCommand.CanExecute(this))

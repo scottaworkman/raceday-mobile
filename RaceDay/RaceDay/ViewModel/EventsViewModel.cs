@@ -239,6 +239,16 @@ namespace RaceDay.ViewModel
             {
                 IsBusy = true;
 
+                var newEvent = await RaceDayClient.AddEvent(EventInfo);
+
+                OnPropertyChanged(nameof(EventInfo));
+                Events.Add(newEvent.eventinfo);
+                MyEvents.Add(newEvent.eventinfo);
+
+                var snack = DependencyService.Get<ISnackbar>();
+                await snack.Show(new SnackbarOptions { Text = "New event added", Duration = SnackbarDuration.Short });
+                await Task.Delay(1500);
+
                 await page.Navigation.PopAsync();
             }
             catch (Exception ex)

@@ -18,6 +18,9 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Footer>
+                    <StackLayout HeightRequest="90"></StackLayout>
+                </ListView.Footer>
             </ListView>
         </AbsoluteLayout>
     </ContentPage.Content>

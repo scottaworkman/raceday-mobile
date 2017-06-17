@@ -111,7 +111,7 @@ namespace RaceDay.Services
         /// <param name="newEvent"></param>
         /// <returns></returns>
         /// 
-        public static async Task<Event> AddEvent(Event newEvent)
+        public static async Task<EventInfo> AddEvent(Event newEvent)
         {
             var token = await AppToken();
             if (token == null)
@@ -119,7 +119,7 @@ namespace RaceDay.Services
 
             RestClient client = new RestClient(API_ENDPOINT);
             client.AddHeader("Authorization", "Bearer " + token.Token);
-            var addedEvent = await client.PostApi<Event>(COMMAND_EVENT, newEvent);
+            var addedEvent = await client.PostApi<EventInfo>(COMMAND_EVENT, newEvent, HttpStatusCode.Created);
             if (client.StatusCode == HttpStatusCode.Unauthorized)
             {
                 token = await Authorize();
@@ -127,7 +127,7 @@ namespace RaceDay.Services
                 {
                     client.ClearHeaders();
                     client.AddHeader("Authorization", "Bearer " + token.Token);
-                    addedEvent = await client.PostApi<Event>(COMMAND_EVENT, newEvent);
+                    addedEvent = await client.PostApi<EventInfo>(COMMAND_EVENT, newEvent, HttpStatusCode.Created);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace RaceDay.Services
             };
 
             RestClient client = new RestClient(API_ENDPOINT);
-            var token = await client.PostApi<AccessToken>(COMMAND_LOGIN, requestBody);
+            var token = await client.PostApi<AccessToken>(COMMAND_LOGIN, requestBody, HttpStatusCode.OK);
             if (token != null)
             {
                 Settings.Token = token;

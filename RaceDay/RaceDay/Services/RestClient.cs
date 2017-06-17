@@ -32,7 +32,7 @@ namespace RaceDay.Services
             headers.Clear();
         }
 
-        public async Task<T> PostApi<T>(string api, object value) where T : class
+        public async Task<T> PostApi<T>(string api, object value, HttpStatusCode success) where T : class
         {
             // Create Http Client
             var client = HttpWebRequest.Create(new Uri(baseUrl, api));
@@ -56,7 +56,7 @@ namespace RaceDay.Services
             //
             HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
             StatusCode = response.StatusCode;
-            if (StatusCode == HttpStatusCode.OK)
+            if (StatusCode == success)
             {
                 Stream receiveStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
@@ -90,6 +90,9 @@ namespace RaceDay.Services
             }
             catch (WebException e)
             {
+                if (e.Response == null)
+                    throw e;
+
                 StatusCode = ((HttpWebResponse)e.Response).StatusCode;
                 if (StatusCode != HttpStatusCode.Unauthorized)
                     throw e;
