@@ -15,6 +15,7 @@ namespace RaceDay.View
     {
         EventsViewModel vm { get; set; }
         Boolean isStartup = true;
+        DateTime lastRefresh = DateTime.MinValue;
 
         public EventTabs()
         {
@@ -87,12 +88,13 @@ namespace RaceDay.View
 
             // Populate lists on page creation
             //
-            if (isStartup)
+            if ((isStartup) || (DateTime.Now.AddDays(-1) > lastRefresh))
             {
                 if (vm.GetEventsCommand.CanExecute(this))
                     vm.GetEventsCommand.Execute(this);
 
                 isStartup = false;
+                lastRefresh = DateTime.Now;
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RaceDay.Helpers;
+using RaceDay.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,23 @@ namespace RaceDay.View
         public SettingsView()
         {
             InitializeComponent();
+
+            var vm = new SettingsViewModel
+            {
+                NotifyNewRace = Settings.NotifyNewRace,
+                NotifyParticipantJoins = Settings.NotifyParticipantJoins,
+                UserName = Settings.UserName
+            };
+            BindingContext = vm;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            var vm = BindingContext as SettingsViewModel;
+            Settings.NotifyNewRace = vm.NotifyNewRace;
+            Settings.NotifyParticipantJoins = vm.NotifyParticipantJoins;
         }
     }
 }
