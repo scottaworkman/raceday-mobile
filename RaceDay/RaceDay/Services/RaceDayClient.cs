@@ -135,6 +135,64 @@ namespace RaceDay.Services
         }
 
         /// <summary>
+        /// Requests the deletion of an event through the API
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        /// 
+        public static async Task<bool> DeleteEvent(int eventId)
+        {
+            var token = await AppToken();
+            if (token == null)
+                return false;
+
+            RestClient client = new RestClient(API_ENDPOINT);
+            client.AddHeader("Authorization", "Bearer " + token.Token);
+            await client.SimpleApi(COMMAND_EVENT + "/" + eventId, "DELETE", null);
+            if (client.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                token = await Authorize();
+                if (token != null)
+                {
+                    client.ClearHeaders();
+                    client.AddHeader("Authorization", "Bearer " + token.Token);
+                    await client.SimpleApi(COMMAND_EVENT + "/" + eventId, "DELETE", null);
+                }
+            }
+
+            return (client.StatusCode == HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Requests the update of event information through the API
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        /// 
+        public static async Task<bool> UpdateEvent(Event _event)
+        {
+            var token = await AppToken();
+            if (token == null)
+                return false;
+
+            RestClient client = new RestClient(API_ENDPOINT);
+            client.AddHeader("Authorization", "Bearer " + token.Token);
+            await client.SimpleApi(COMMAND_EVENT + "/" + _event.EventId, "PUT", _event);
+            if (client.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                token = await Authorize();
+                if (token != null)
+                {
+                    client.ClearHeaders();
+                    client.AddHeader("Authorization", "Bearer " + token.Token);
+                    await client.SimpleApi(COMMAND_EVENT + "/" + _event.EventId, "PUT", _event);
+                }
+            }
+
+            return (client.StatusCode == HttpStatusCode.OK);
+        }
+
+        /// <summary>
         /// Obtain an Access Token used for authenticating this application as a REST client.
         /// Access Tokens are stored in mobile persistent storage, so if not exist we must obtain a new one
         /// </summary>

@@ -33,5 +33,16 @@ namespace RaceDay.Helpers
             if (index < collection.Count)
                 collection.RemoveAt(index);
         }
+
+        public static void RefreshEvents(this ObservableCollection<Event> collection)
+        {
+            Event[] mirrorEvents = new Event[collection.Count];
+            collection.CopyTo(mirrorEvents, 0);
+            collection.Clear();
+            foreach (var _event in mirrorEvents)
+            {
+                collection.Add(_event);
+            }
+        }
     }
 }

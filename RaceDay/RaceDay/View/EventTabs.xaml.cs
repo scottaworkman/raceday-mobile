@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RaceDay.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using RaceDay.Model;
 
 namespace RaceDay.View
 {
@@ -36,7 +37,19 @@ namespace RaceDay.View
                 {
                     Icon = "ic_add_circle.png",
                     Text = "New Event",
-                    Order = ToolbarItemOrder.Primary
+                    Order = ToolbarItemOrder.Primary,
+                    Command = new Command(() =>
+                    {
+                        Event emptyEvent = new Event()
+                        {
+                            Name = string.Empty,
+                            Date = DateTime.Now.Date,
+                            Location = string.Empty,
+                            Url = string.Empty,
+                            Description = string.Empty
+                        };
+                        Navigation.PushAsync(new AddEvent(emptyEvent, vm));
+                    })
                 });
             }
             ToolbarItems.Add(new ToolbarItem()
@@ -54,7 +67,11 @@ namespace RaceDay.View
             {
                 Icon = "ic_settings.png",
                 Text = "Settings",
-                Order = ToolbarItemOrder.Secondary
+                Order = ToolbarItemOrder.Secondary,
+                Command = new Command(() =>
+                {
+                    Navigation.PushAsync(new SettingsView());
+                })
             });
 
             // Add the tab content pages

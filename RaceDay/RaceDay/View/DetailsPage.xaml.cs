@@ -8,6 +8,7 @@ using RaceDay.Model;
 using RaceDay.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using RaceDay.Helpers;
 
 namespace RaceDay.View
 {
@@ -22,6 +23,35 @@ namespace RaceDay.View
             BindingContext = evm;
 
             this.Title = selectedEvent.Name;
+
+            if ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || (selectedEvent.CreatorId == Settings.UserId))
+            {
+                ToolbarItems.Add(new ToolbarItem()
+                {
+                    Icon = "ic_create.png",
+                    Text = "Edit",
+                    Order = ToolbarItemOrder.Primary,
+                    Command = new Command(() =>
+                    {
+                        Navigation.PushAsync(new AddEvent(evm.EventInfo, evm));
+                    })
+                });
+            }
+
+            if (Settings.AccessRole == (int)Settings.ApplicationRole.Admin)
+            {
+                ToolbarItems.Add(new ToolbarItem()
+                {
+                    Icon = "ic_delete.png",
+                    Text = "Delete",
+                    Order = ToolbarItemOrder.Primary,
+                    Command = new Command(() =>
+                    {
+                        if (evm.DeleteEventCommand.CanExecute(this))
+                            evm.DeleteEventCommand.Execute(this);
+                    })
+                });
+            }
 
             LocationLabel.IsVisible = !string.IsNullOrEmpty(selectedEvent.Location);
             DescriptionLabel.IsVisible = !string.IsNullOrEmpty(selectedEvent.Description);

@@ -14,11 +14,16 @@ namespace RaceDay.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddEvent : ContentPage
     {
+        private bool isNewEvent;
+
         public AddEvent(Event selectedEvent, EventsViewModel evm)
         {
             InitializeComponent();
 
             txtDate.MinimumDate = DateTime.Now.Date;
+
+            isNewEvent = string.IsNullOrEmpty(selectedEvent.Name);
+            Title = (isNewEvent ? "Add New Event" : "Update Event");
 
             evm.EventInfo = selectedEvent;
             BindingContext = evm;
@@ -44,29 +49,26 @@ namespace RaceDay.View
 
             // Validation must occur here as we can't wait on the command
             //
-            if (string.IsNullOrEmpty(vm.EventInfo.Name.Trim()))
+            if (await vm.ValidateEvent() == false)
             {
-                await Application.Current.MainPage.DisplayAlert("Validation Error", "Event Name is required. Please specify the name of the event.", "Ok");
-                txtEventName.Focus();
+                if (string.IsNullOrEmpty(vm.EventInfo.Name.Trim()))
+                    txtEventName.Focus();
+
                 return;
             }
-
-            if (vm.EventInfo.Date < DateTime.Now.Date)
-            {
-                await Application.Current.MainPage.DisplayAlert("Validation Error", "Event Date must be an upcoming date.", "Ok");
-                txtDate.Focus();
-                return;
-            }
-
-            // URL must start with http: or https:
-            //
-            if (vm.EventInfo.Url.ToLower().StartsWith("http://") == false && vm.EventInfo.Url.ToLower().StartsWith("https://") == false)
-                vm.EventInfo.Url = "http://" + vm.EventInfo.Url;
 
             // Validation passed, call the command
             //
-            if (vm.AddEventCommand.CanExecute(this))
-                vm.AddEventCommand.Execute(this);
+            if (isNewEvent)
+            {
+                if (vm.AddEventCommand.CanExecute(this))
+                    vm.AddEventCommand.Execute(this);
+            }
+            else
+            {
+                if (vm.UpdateEventCommand.CanExecute(this))
+                    vm.UpdateEventCommand.Execute(this);
+            }
         }
 
         private void BtnCancel_Clicked(object sender, EventArgs e)

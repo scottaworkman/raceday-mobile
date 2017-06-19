@@ -28,6 +28,8 @@ namespace RaceDay.ViewModel
         public Command GetParticipantsCommand { get; set; }
         public Command GetAttendingCommand { get; set; }
         public Command AddEventCommand { get; set; }
+        public Command DeleteEventCommand { get; set; }
+        public Command UpdateEventCommand { get; set; }
 
         public FloatingActionButtonView FAButton { get; set; }
 
@@ -53,6 +55,12 @@ namespace RaceDay.ViewModel
                 () => !IsBusy);
             AddEventCommand = new Command<ContentPage>(
                 async (page) => await AddEvent(page),
+                (page) => !IsBusy);
+            DeleteEventCommand = new Command<ContentPage>(
+                async (page) => await DeleteEvent(page),
+                (page) => !IsBusy);
+            UpdateEventCommand = new Command<ContentPage>(
+                async (page) => await UpdateEvent(page),
                 (page) => !IsBusy);
         }
 
@@ -242,11 +250,120 @@ namespace RaceDay.ViewModel
                 var newEvent = await RaceDayClient.AddEvent(EventInfo);
 
                 OnPropertyChanged(nameof(EventInfo));
-                Events.Add(newEvent.eventinfo);
-                MyEvents.Add(newEvent.eventinfo);
+                Events.AddEvent(newEvent.eventinfo);
+                MyEvents.AddEvent(newEvent.eventinfo);
 
                 var snack = DependencyService.Get<ISnackbar>();
                 await snack.Show(new SnackbarOptions { Text = "New event added", Duration = SnackbarDuration.Short });
+                await Task.Delay(1500);
+
+                await page.Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex);
+                error = ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (error != null)
+                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+        }
+
+        /// <summary>
+        /// Command to delete event through API.
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        async Task DeleteEvent(ContentPage page)
+        {
+            if (IsBusy)
+                return;
+
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                var toast = DependencyService.Get<IToast>();
+                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
+                await Task.Delay(toast.Duration());
+                return;
+            }
+
+            Exception error = null;
+            try
+            {
+                IsBusy = true;
+
+                var answer = await page.DisplayAlert("Delete Event?", "Are you sure you want to delete this event", "Yes", "No");
+                if (answer == false)
+                    return;
+
+                if (await RaceDayClient.DeleteEvent(EventInfo.EventId) == false)
+                {
+                    await page.DisplayAlert("Application Error", "Unable to delete event", "Ok");
+                    return;
+                }
+
+                Events.DeleteEvent(EventInfo.EventId);
+                MyEvents.DeleteEvent(EventInfo.EventId);
+
+                var snack = DependencyService.Get<ISnackbar>();
+                await snack.Show(new SnackbarOptions { Text = "Event deleted", Duration = SnackbarDuration.Short });
+                await Task.Delay(1500);
+
+                await page.Navigation.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex);
+                error = ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (error != null)
+                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+        }
+
+        /// <summary>
+        /// Command to update event through API.  Data was validated from the view
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        async Task UpdateEvent(ContentPage page)
+        {
+            if (IsBusy)
+                return;
+
+            if (!CrossConnectivity.Current.IsConnected)
+            {
+                var toast = DependencyService.Get<IToast>();
+                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
+                await Task.Delay(toast.Duration());
+                return;
+            }
+
+            Exception error = null;
+            try
+            {
+                IsBusy = true;
+
+                if (await RaceDayClient.UpdateEvent(EventInfo) == false)
+                {
+                    await page.DisplayAlert("Application Error", "Unable to update the event information", "Ok");
+                    return;
+                }
+
+                OnPropertyChanged(nameof(EventInfo));
+                Events.RefreshEvents();
+                MyEvents.RefreshEvents();
+
+                var snack = DependencyService.Get<ISnackbar>();
+                await snack.Show(new SnackbarOptions { Text = "Event information updated", Duration = SnackbarDuration.Short });
                 await Task.Delay(1500);
 
                 await page.Navigation.PopAsync();
@@ -308,6 +425,33 @@ namespace RaceDay.ViewModel
             {
                 MyEvents.DeleteEvent(EventInfo.EventId);
             }
+        }
+
+        /// <summary>
+        /// Validate form fields.  Name and Date are required and Date must be in the future.
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        public async Task<Boolean> ValidateEvent()
+        {
+            if (string.IsNullOrEmpty(EventInfo.Name.Trim()))
+            {
+                await Application.Current.MainPage.DisplayAlert("Validation Error", "Event Name is required. Please specify the name of the event.", "Ok");
+                return false;
+            }
+
+            if (EventInfo.Date < DateTime.Now.Date)
+            {
+                await Application.Current.MainPage.DisplayAlert("Validation Error", "Event Date must be an upcoming date.", "Ok");
+                return false;
+            }
+
+            // URL must start with http: or https:
+            //
+            if (!string.IsNullOrEmpty(EventInfo.Url.Trim()) && EventInfo.Url.ToLower().StartsWith("http://") == false && EventInfo.Url.ToLower().StartsWith("https://") == false)
+                EventInfo.Url = "http://" + EventInfo.Url;
+
+            return true;
         }
 
         /// <summary>
