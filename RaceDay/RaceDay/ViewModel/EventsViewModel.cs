@@ -84,36 +84,75 @@ namespace RaceDay.ViewModel
         }
 
         /// <summary>
-        /// Retrieve the list of events and add to collection used as binding source
+        /// Common method to check for internet connection for each method
         /// </summary>
+        /// <returns></returns>
         /// 
-        async Task GetEvents()
+        public async Task<bool> IsConnected(bool mainError = false)
         {
-            if (IsBusy)
-                return;
-
             if (!CrossConnectivity.Current.IsConnected)
             {
-                if (Application.Current.MainPage != null)
-                    await Application.Current.MainPage.DisplayAlert("No Connection!", "You do not have internet connectivity to retrieve data.", "OK");
+                if (mainError && (Application.Current.MainPage != null))
+                    await Application.Current.MainPage.DisplayAlert("No Connection!", "No internet connection.  Internet is required to load event list.", "OK");
                 else
                 {
-                    if (FAButton != null)
+                    if (FAButton != null && FAButton.Hide != null)
                         FAButton.Hide();
                     var toast = DependencyService.Get<IToast>();
                     toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
                     await Task.Delay(toast.Duration());
-                    if (FAButton != null)
+                    if (FAButton != null && FAButton.Show != null)
                         FAButton.Show();
                 }
-                return;
+                return false;
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Common Task handler for commands.  Wraps the logic in common checks and error handling
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        /// 
+        private async Task ExecuteCommand(Func<Task> action, bool mainError = false)
+        {
+            if (IsBusy)
+                return;
+
+            if (!await IsConnected(mainError))
+                return;
 
             Exception error = null;
             try
             {
                 IsBusy = true;
 
+                await action();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex);
+                error = ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            if (error != null)
+                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+        }
+
+        /// <summary>
+        /// Retrieve the list of events and add to collection used as binding source
+        /// </summary>
+        /// 
+        async Task GetEvents()
+        {
+            await ExecuteCommand(async () =>
+            {
                 var items = await RaceDayClient.GetEvents();
 
                 Events.Clear();
@@ -124,19 +163,8 @@ namespace RaceDay.ViewModel
                     if (item.Attending)
                         MyEvents.Add(item);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            }, true);
         }
 
         /// <summary>
@@ -145,36 +173,11 @@ namespace RaceDay.ViewModel
         /// 
         async Task GetParticipants()
         {
-            if (IsBusy)
-                return;
-
-            if (!CrossConnectivity.Current.IsConnected)
+            await ExecuteCommand(async () =>
             {
-                var toast = DependencyService.Get<IToast>();
-                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
-                await Task.Delay(toast.Duration());
-                return;
-            }
-
-            Exception error = null;
-            try
-            {
-                IsBusy = true;
-
                 await UpdateParticipantsList();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            });
         }
 
         /// <summary>
@@ -184,22 +187,8 @@ namespace RaceDay.ViewModel
         /// 
         async Task ChangeAttendance()
         {
-            if (IsBusy)
-                return;
-
-            if (!CrossConnectivity.Current.IsConnected)
+            await ExecuteCommand(async () =>
             {
-                var toast = DependencyService.Get<IToast>();
-                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
-                await Task.Delay(toast.Duration());
-                return;
-            }
-
-            Exception error = null;
-            try
-            {
-                IsBusy = true;
-
                 var result = await RaceDayClient.Attending(EventInfo.EventId, EventInfo.Attending);
                 if (result == false)
                     EventInfo.Attending = !EventInfo.Attending;
@@ -209,19 +198,8 @@ namespace RaceDay.ViewModel
                     UpdateEvent();
                     await UpdateParticipantsList();
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            });
         }
 
         /// <summary>
@@ -231,22 +209,8 @@ namespace RaceDay.ViewModel
         /// 
         async Task AddEvent(ContentPage page)
         {
-            if (IsBusy)
-                return;
-
-            if (!CrossConnectivity.Current.IsConnected)
+            await ExecuteCommand(async () =>
             {
-                var toast = DependencyService.Get<IToast>();
-                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
-                await Task.Delay(toast.Duration());
-                return;
-            }
-
-            Exception error = null;
-            try
-            {
-                IsBusy = true;
-
                 var newEvent = await RaceDayClient.AddEvent(EventInfo);
 
                 OnPropertyChanged(nameof(EventInfo));
@@ -258,19 +222,8 @@ namespace RaceDay.ViewModel
                 await Task.Delay(1500);
 
                 await page.Navigation.PopAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            });
         }
 
         /// <summary>
@@ -280,22 +233,8 @@ namespace RaceDay.ViewModel
         /// 
         async Task DeleteEvent(ContentPage page)
         {
-            if (IsBusy)
-                return;
-
-            if (!CrossConnectivity.Current.IsConnected)
+            await ExecuteCommand(async () =>
             {
-                var toast = DependencyService.Get<IToast>();
-                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
-                await Task.Delay(toast.Duration());
-                return;
-            }
-
-            Exception error = null;
-            try
-            {
-                IsBusy = true;
-
                 var answer = await page.DisplayAlert("Delete Event?", "Are you sure you want to delete this event", "Yes", "No");
                 if (answer == false)
                     return;
@@ -314,19 +253,8 @@ namespace RaceDay.ViewModel
                 await Task.Delay(1500);
 
                 await page.Navigation.PopAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            });
         }
 
         /// <summary>
@@ -336,22 +264,8 @@ namespace RaceDay.ViewModel
         /// 
         async Task UpdateEvent(ContentPage page)
         {
-            if (IsBusy)
-                return;
-
-            if (!CrossConnectivity.Current.IsConnected)
+            await ExecuteCommand(async () =>
             {
-                var toast = DependencyService.Get<IToast>();
-                toast.Show(new ToastOptions { Text = "No internet connection", Duration = ToastDuration.Long });
-                await Task.Delay(toast.Duration());
-                return;
-            }
-
-            Exception error = null;
-            try
-            {
-                IsBusy = true;
-
                 if (await RaceDayClient.UpdateEvent(EventInfo) == false)
                 {
                     await page.DisplayAlert("Application Error", "Unable to update the event information", "Ok");
@@ -367,19 +281,8 @@ namespace RaceDay.ViewModel
                 await Task.Delay(1500);
 
                 await page.Navigation.PopAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error: " + ex);
-                error = ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            if (error != null)
-                await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+                return;
+            });
         }
 
         /// <summary>
