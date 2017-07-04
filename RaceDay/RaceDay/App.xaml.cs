@@ -5,6 +5,7 @@ using System.Text;
 using RaceDay.Model;
 using RaceDay.View;
 using Xamarin.Forms;
+using RaceDay.Helpers;
 
 namespace RaceDay
 {
@@ -15,20 +16,18 @@ namespace RaceDay
         {
             InitializeComponent();
 
-            var content = new EventTabs();
-            MainPage = new NavigationPage(content);
-
-            //fab.Hide();
-            //var toast = DependencyService.Get<IToast>();
-            //toast.Show(new ToastOptions { Text = "Button Pressed", Duration = ToastDuration.Short });
-            //await Task.Delay(toast.Duration());
-            //fab.Show();
-
-            //var snack = DependencyService.Get<ISnackbar>();
-            //await snack.Show(new SnackbarOptions { Text = "Snackbar option", Duration = SnackbarDuration.Short, FloatingButton = fab });
-            //int snackHeight = snack.GetHeight();
-
-            //var result = await snack.Notify();
+            if (string.IsNullOrEmpty(Settings.UserId))
+            {
+                MainPage = new NavigationPage(new InfoMain());
+            }
+            else if (Settings.HideInformation == false)
+            {
+                MainPage = new NavigationPage(new InfoTips());
+            }
+            else
+            {
+                MainPage = new NavigationPage(new EventTabs());
+            }
         }
 
         protected override void OnStart()

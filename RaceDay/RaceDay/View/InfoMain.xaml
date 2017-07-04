@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RaceDay.View.InfoMain">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="loginButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#03A9F4" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="HeightRequest" Value="60" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid x:Name="loginGrid" RowSpacing="2" ColumnSpacing="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0" Grid.Column="0">
+                <StackLayout Padding="10">
+                    <Image Source="Logo.png" HorizontalOptions="Center" Margin="0,20,0,20" />
+                    <Label FontSize="Large" HorizontalOptions="Center" Text="Jordan YMCA MultFit" FontAttributes="Bold" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,40" FontSize="Medium" Text="Thank you for using the JYMF RaceDay mobile app.  Use of the app requires your Facebook login for your identification and to verify that you are a member of the JYMF Facebook group." />
+                    <Label HorizontalTextAlignment="Center" FontSize="Medium"  Text="Click the login button below to authorize this app to use your Facebook login." />
+                </StackLayout>
+            </ScrollView>
+            <Button x:Name="btnLogin" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Facebook Login" Style="{StaticResource loginButton}" Clicked="BtnLogin_Clicked" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
