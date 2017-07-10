@@ -13,7 +13,7 @@
                     <Switch x:Name="SwitchNotifyNewRace" HorizontalOptions="End" IsToggled="{Binding NotifyNewRace}" />
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,0,0,15">
-                    <Label HorizontalOptions="Start">Participant joins one of my races</Label>
+                    <Label HorizontalOptions="Start">Racer joins one of my races</Label>
                     <Label HorizontalOptions="StartAndExpand" TextColor="#FF9800"> (future)</Label>
                     <Switch x:Name="SwitchNotifyParticipantJoins" HorizontalOptions="End" IsToggled="{Binding NotifyParticipantJoins}" />
                 </StackLayout>

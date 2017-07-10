@@ -31,7 +31,7 @@
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding ImageUrl}" Margin="0, 5, 10, 5" HeightRequest="50" WidthRequest="50" />
-                                    <Label Text="{Binding Name}" FontSize="Medium" VerticalOptions="Center" />
+                                    <Label Text="{Binding Name}" FontSize="Default" VerticalOptions="Center" />
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
