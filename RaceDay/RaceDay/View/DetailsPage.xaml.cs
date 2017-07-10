@@ -81,7 +81,7 @@ namespace RaceDay.View
         {
             base.OnDisappearing();
             AttendingSwitch.Toggled -= AttendingSwitch_Toggled;
-            RacersListView.ItemSelected += RacersListView_ItemSelected;
+            RacersListView.ItemSelected -= RacersListView_ItemSelected;
         }
 
         /// <summary>

@@ -16,16 +16,16 @@ namespace RaceDay.View
         public InfoTips()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
         }
 
         private async void BtnNext_Clicked(object sender, EventArgs e)
         {
-            if (SkipSwitch.IsToggled == true)
-                Settings.HideInformation = true;
-
-            await Navigation.PushAsync(new EventTabs());
-            Navigation.RemovePage(this);
+            await Navigation.PopModalAsync();
         }
     }
 }

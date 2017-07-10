@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="RaceDay.View.InfoTips">
+             x:Class="RaceDay.View.InfoTips"
+             Title="Application Help">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="nextButton" TargetType="Button">
@@ -26,17 +27,13 @@
             </Grid.RowDefinitions>
             <ScrollView Grid.Row="0" Grid.Column="0">
                 <StackLayout Padding="10,20,10,10">
-                    <StackLayout Orientation="Horizontal" Margin="0,0,0,20">
-                        <Label FontSize="Medium" Margin="0, 0, 10, 0" FontAttributes="Bold">Do not show this information again:</Label>
-                        <Switch x:Name="SkipSwitch" IsToggled="True"></Switch>
-                    </StackLayout>
                     <Label Style="{StaticResource textLabels}" Text="The RaceDay mobile app requires internet access to retrieve event information.  The opening screen will list all events entered by MultiFit users. Events you are attending are indicated by a colored star.  You can also swipe to the right or touch the My Events tab to show only those events you are attending." />
                     <Label Style="{StaticResource textLabels}" Text="Touch on an event to display the event details and view those who are attending the event.  To change your attendance, touch the toggle button next to the 'I am Racing' label." />
                     <Label Style="{StaticResource textLabels}" Text="To add a new event to RaceDay, touch the Add icon (floating button at lower right for Android, plus icon on toolbar for iOS).  The event list can be refereshed by either touching refresh icon on the toolbar or by pulling down on the list." />
                     <Label Style="{StaticResource textLabels}" Text="The toolbar also has additional settings that can be accessed by clicking the three dots and selecting Settings. Notification settings are for future enhancements and the logout button can be used to remove your Facebook login from the app." />
                 </StackLayout>
             </ScrollView>
-            <Button HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Continue to RaceDay" Style="{StaticResource nextButton}" Clicked="BtnNext_Clicked" />
+            <Button HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Close Help" Style="{StaticResource nextButton}" Clicked="BtnNext_Clicked" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

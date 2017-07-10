@@ -7,6 +7,7 @@ using RaceDay.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using RaceDay.Model;
+using RaceDay.Helpers;
 
 namespace RaceDay.View
 {
@@ -79,7 +80,6 @@ namespace RaceDay.View
             //
             Children.Add(new AllEvents(vm) { Title = "All Events", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_group.png": string.Empty) });
             Children.Add(new MyEvents(vm) { Title = "My Events", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_person.png" : string.Empty) });
-
         }
 
         protected override void OnAppearing()
@@ -93,8 +93,34 @@ namespace RaceDay.View
                 if (vm.GetEventsCommand.CanExecute(this))
                     vm.GetEventsCommand.Execute(this);
 
-                isStartup = false;
                 lastRefresh = DateTime.Now;
+            }
+
+            // Make main page if coming from a login
+            //
+            if (isStartup)
+            {
+                ResetNavigationStack();
+                isStartup = false;
+            }
+
+            // Display Tips
+            //
+            if (Settings.HideInformation == false)
+            {
+                Settings.HideInformation = true;
+                Navigation.PushModalAsync(new InfoTips());
+            }
+        }
+
+        private void ResetNavigationStack()
+        {
+            if (Navigation != null && Navigation.NavigationStack.Count() > 1)
+            {
+                while(Navigation.NavigationStack.Count() > 1)
+                {
+                    Navigation.RemovePage(Navigation.NavigationStack[0]);
+                }
             }
         }
     }

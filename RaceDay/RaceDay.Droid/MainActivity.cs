@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Xamarin.Forms;
+using Android.Content;
 
 namespace RaceDay.Droid
 {
@@ -24,6 +25,9 @@ namespace RaceDay.Droid
 
             DependencyService.Register<Toast>();
             DependencyService.Register<Snackbar>();
+            DependencyService.Register<CookieReset>();
+
+            Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);
 
             LoadApplication(new App());
         }
