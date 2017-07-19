@@ -9,6 +9,7 @@ using RaceDay.Model;
 using RaceDay.Services;
 using Xamarin.Forms;
 using RaceDay.Helpers;
+using System.Collections.Generic;
 
 namespace RaceDay.ViewModel
 {
@@ -216,6 +217,8 @@ namespace RaceDay.ViewModel
                 OnPropertyChanged(nameof(EventInfo));
                 Events.AddEvent(newEvent.eventinfo);
                 MyEvents.AddEvent(newEvent.eventinfo);
+
+                HockeyApp.MetricsManager.TrackEvent("Event Added", new Dictionary<string, string> { { "Name", newEvent.eventinfo.Name }, { "Date", newEvent.eventinfo.Date.ToString("MM/dd/yyyy") } }, new Dictionary<string, double>());
 
                 var snack = DependencyService.Get<ISnackbar>();
                 await snack.Show(new SnackbarOptions { Text = "New event added", Duration = SnackbarDuration.Short });
