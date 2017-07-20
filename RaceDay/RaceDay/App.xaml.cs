@@ -6,6 +6,7 @@ using RaceDay.Model;
 using RaceDay.View;
 using Xamarin.Forms;
 using RaceDay.Helpers;
+using HockeyApp;
 
 namespace RaceDay
 {
@@ -32,7 +33,10 @@ namespace RaceDay
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            MetricsManager.TrackEvent("App Start",
+                new Dictionary<string, string> {
+                    { "UID", Settings.UserId } }, 
+                new Dictionary<string, double>());
         }
 
         protected override void OnSleep()

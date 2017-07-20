@@ -102,6 +102,11 @@ namespace RaceDay.View
             {
                 ResetNavigationStack();
                 isStartup = false;
+
+                HockeyApp.MetricsManager.TrackEvent("Login",
+                    new Dictionary<string, string> {
+                        { "UID", Settings.UserId } },
+                    new Dictionary<string, double>());
             }
 
             // Display Tips

@@ -34,6 +34,7 @@ namespace RaceDay.Droid
             Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);
 
             MetricsManager.Register(Application, HOCKEY_APP_ID);
+            MetricsManager.EnableUserMetrics();
 
             LoadApplication(new App());
         }
