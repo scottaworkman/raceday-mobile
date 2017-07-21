@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+raceday/raceday/helpers/settingsdefaults.cs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
