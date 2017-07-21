@@ -47,6 +47,7 @@
     <Compile Include="Helpers\IToast.cs" />
     <Compile Include="Helpers\ObservableEventCollection.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Helpers\SettingsDefaults.cs" />
     <Compile Include="Model\AccessRequest.cs" />
     <Compile Include="Model\AccessToken.cs" />
     <Compile Include="Model\Event.cs" />
