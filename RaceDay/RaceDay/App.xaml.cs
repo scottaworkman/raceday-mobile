@@ -17,6 +17,11 @@ namespace RaceDay
         {
             InitializeComponent();
 
+            MetricsManager.TrackEvent("App Start",
+                new Dictionary<string, string> {
+                    { "UID", Settings.UserId } },
+                new Dictionary<string, double>());
+
             if (string.IsNullOrEmpty(Settings.UserId))
             {
                 MainPage = new NavigationPage(new InfoMain());
@@ -33,10 +38,6 @@ namespace RaceDay
 
         protected override void OnStart()
         {
-            MetricsManager.TrackEvent("App Start",
-                new Dictionary<string, string> {
-                    { "UID", Settings.UserId } }, 
-                new Dictionary<string, double>());
         }
 
         protected override void OnSleep()
