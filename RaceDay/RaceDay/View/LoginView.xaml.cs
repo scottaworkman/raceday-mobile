@@ -105,6 +105,13 @@ namespace RaceDay.View
                 Settings.UserName = fb.Name;
                 Settings.UserEmail = fb.Email;
 
+                // Login Custom Event
+                //
+                HockeyApp.MetricsManager.TrackEvent("Login",
+                    new Dictionary<string, string> {
+                        { "UID", Settings.UserId } },
+                    new Dictionary<string, double>());
+
                 await Navigation.PushAsync(new EventTabs());
             }
         }
