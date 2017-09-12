@@ -14,6 +14,7 @@ using Java.Lang;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 
+[assembly: Xamarin.Forms.Dependency(typeof(RaceDay.Droid.Snackbar))]
 namespace RaceDay.Droid
 {
     public class SnackbarResult : ISnackbarResult

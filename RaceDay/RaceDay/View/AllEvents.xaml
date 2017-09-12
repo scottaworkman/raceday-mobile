@@ -2,24 +2,40 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RaceDay.View.AllEvents">
+    <ContentPage.BackgroundColor>
+        <OnPlatform x:TypeArguments="Color" iOS="#bdbdbd" />
+    </ContentPage.BackgroundColor>
     <ContentPage.Content>
         <AbsoluteLayout x:Name="absLayout" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <ListView x:Name="ListViewEvents" ItemsSource="{Binding Events}" HasUnevenRows="True" IsPullToRefreshEnabled="True" RefreshCommand="{Binding GetEventsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1">
+            <ListView x:Name="ListViewEvents" ItemsSource="{Binding Events}" HasUnevenRows="True" IsPullToRefreshEnabled="True" RefreshCommand="{Binding GetEventsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" SeparatorColor="Transparent" SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0, 0, 10, 0">
-                                <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Margin="10, 10, 10, 10">
-                                    <Label Text="{Binding Date, StringFormat='{0:M/d/yyyy}'}" FontAttributes="Bold" Margin="0" />
-                                    <Label Text="{Binding Name}" Margin="0" />
+                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="#bdbdbd">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0.4">
+                                    <StackLayout.BackgroundColor>
+                                        <OnPlatform x:TypeArguments="Color" iOS="#ffffff" Android="#f5f5f5" />
+                                    </StackLayout.BackgroundColor>
+
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0, 0, 10, 0">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Margin="10, 10, 10, 10">
+                                            <Label Text="{Binding Date, StringFormat='{0:M/d/yyyy}'}" FontAttributes="Bold" Margin="0" Style="{StaticResource SmallLabel}" />
+                                            <Label Text="{Binding Name}" Margin="0" Style="{StaticResource SmallLabel}" />
+                                        </StackLayout>
+                                        <Image Source="ic_star_orange" IsVisible="{Binding Attending}" HorizontalOptions="End" />
+                                    </StackLayout>
+                                    
                                 </StackLayout>
-                                <Image Source="ic_star_orange" IsVisible="{Binding Attending}" HorizontalOptions="End" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.Footer>
-                    <StackLayout HeightRequest="90"></StackLayout>
+                    <StackLayout>
+                        <StackLayout.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double" Android="90" iOS="0" />
+                        </StackLayout.HeightRequest>
+                    </StackLayout>
                 </ListView.Footer>
             </ListView>
         </AbsoluteLayout>

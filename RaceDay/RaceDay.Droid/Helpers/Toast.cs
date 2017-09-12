@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using Plugin.CurrentActivity;
 
+[assembly: Xamarin.Forms.Dependency(typeof(RaceDay.Droid.Toast))]
 namespace RaceDay.Droid
 {
     public class Toast : IToast

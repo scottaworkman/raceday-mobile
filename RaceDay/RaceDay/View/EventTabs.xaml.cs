@@ -24,7 +24,8 @@ namespace RaceDay.View
 
             // Set Tabs to Accent color
             //
-            BarBackgroundColor = Color.FromHex("ff03A9F4");
+            if (Device.RuntimePlatform == Device.Android)
+                BarBackgroundColor = Color.FromHex("ff03A9F4");
 
             // Shared ViewModel as both have same list as source (one with a filter)
             //
@@ -69,7 +70,7 @@ namespace RaceDay.View
             {
                 Icon = "ic_settings.png",
                 Text = "Settings",
-                Order = ToolbarItemOrder.Secondary,
+                Order = ToolbarItemOrder.Primary,
                 Command = new Command(() =>
                 {
                     Navigation.PushAsync(new SettingsView());
@@ -78,8 +79,8 @@ namespace RaceDay.View
 
             // Add the tab content pages
             //
-            Children.Add(new AllEvents(vm) { Title = "All Events", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_group.png": string.Empty) });
-            Children.Add(new MyEvents(vm) { Title = "My Events", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_person.png" : string.Empty) });
+            Children.Add(new AllEvents(vm) { Title = "ALL EVENTS", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_group.png": string.Empty) });
+            Children.Add(new MyEvents(vm) { Title = "MY EVENTS", Icon = (Device.RuntimePlatform == Device.iOS ? "ic_person.png" : string.Empty) });
         }
 
         protected override void OnAppearing()

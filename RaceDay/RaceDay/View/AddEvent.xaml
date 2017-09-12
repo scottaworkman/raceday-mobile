@@ -18,7 +18,9 @@
                 <Setter Property="FontSize" Value="18" />
             </Style>
             <Style x:Key="label" TargetType="Label">
-                <Setter Property="TextColor" Value="#999" />
+                <Setter Property="TextColor">
+                    <OnPlatform x:TypeArguments="Color" iOS="#212121" Android="#999" />
+                </Setter>
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="0,10,0,0" />
             </Style>
@@ -36,6 +38,10 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="10, 20, 10, 10" />
+    </ContentPage.Padding>
     <ContentPage.Content>
         <Grid x:Name="createGrid" RowSpacing="2" ColumnSpacing="2">
             <Grid.RowDefinitions>

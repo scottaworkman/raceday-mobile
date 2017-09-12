@@ -57,6 +57,11 @@ namespace RaceDay.View
                 return;
             }
 
+            // Check for placeholder text in the description from the iOS renderer
+            //
+            if (vm.EventInfo.Description == txtDescription.Placeholder)
+                vm.EventInfo.Description = string.Empty;
+
             // Validation passed, call the command
             //
             if (isNewEvent)

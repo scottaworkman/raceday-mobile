@@ -8,16 +8,20 @@
             <converter:EnableLabelConverter x:Key="EnableLabel" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
             <StackLayout Orientation="Vertical" Padding="10">
-                <ListView x:Name="RacersListView" ItemsSource="{Binding Participants}" HasUnevenRows="True">
+                <ListView x:Name="RacersListView" ItemsSource="{Binding Participants}" HasUnevenRows="True" SeparatorColor="Transparent" SeparatorVisibility="None">
                     <ListView.Header>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{Binding EventInfo.Date, StringFormat='{0:M/d/yyyy}'}" FontAttributes="Bold" FontSize="Medium" Margin="0" />
-                            <Label Text="{Binding EventInfo.Name}" FontSize="Medium" Margin="0" />
-                            <Label Text="{Binding EventInfo.Location}" Margin="0" x:Name="LocationLabel" />
+                            <Label Text="{Binding EventInfo.Date, StringFormat='{0:M/d/yyyy}'}" FontAttributes="Bold" FontSize="Medium" Margin="0" Style="{StaticResource MediumLabel}" />
+                            <Label Text="{Binding EventInfo.Name}" FontSize="Medium" Margin="0" Style="{StaticResource MediumLabel}" />
+                            <Label Text="{Binding EventInfo.Location}" Margin="0" x:Name="LocationLabel" Style="{StaticResource MediumLabel}" />
                             <Label Text="{Binding EventInfo.Url}" Margin="0" x:Name="UrlLabel" TextColor="#03A9F4" />
-                            <Label Text="{Binding EventInfo.Description}" Margin="0" x:Name="DescriptionLabel" />
+                            <Label Text="{Binding EventInfo.Description}" Margin="0" x:Name="DescriptionLabel" Style="{StaticResource SmallLabel}" />
 
                             <StackLayout Orientation="Horizontal" Margin="0, 10, 0, 0">
                                 <Label FontSize="Medium" Margin="0, 0, 10, 0" TextColor="{Binding EventInfo.Attending, Converter={StaticResource EnableLabel}}">I am Racing:</Label>
@@ -29,11 +33,20 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal">
-                                    <Image Source="{Binding ImageUrl}" Margin="0, 5, 10, 5" HeightRequest="50" WidthRequest="50" />
-                                    <Label Text="{Binding Name}" FontSize="Default" VerticalOptions="Center" />
+                            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="#bdbdbd">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0.4">
+                                    <StackLayout.BackgroundColor>
+                                        <OnPlatform x:TypeArguments="Color" iOS="#ffffff" Android="#f5f5f5" />
+                                    </StackLayout.BackgroundColor>
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding ImageUrl}" Margin="0, 5, 10, 5" HeightRequest="50" WidthRequest="50" />
+                                        <Label Text="{Binding Name}" FontSize="Default" VerticalOptions="Center" Style="{StaticResource MediumLabel}" />
+                                    </StackLayout>
+
                                 </StackLayout>
-                            </ViewCell>
+                            </StackLayout>
+                        </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

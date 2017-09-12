@@ -13,6 +13,10 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="10, 20, 10, 10" />
+    </ContentPage.Padding>
     <ContentPage.Content>
         <Grid x:Name="loginGrid" RowSpacing="2" ColumnSpacing="2">
             <Grid.RowDefinitions>
@@ -22,9 +26,9 @@
             <ScrollView Grid.Row="0" Grid.Column="0">
                 <StackLayout Padding="10">
                     <Image Source="Logo.png" HorizontalOptions="Center" Margin="0,20,0,20" />
-                    <Label FontSize="Large" HorizontalOptions="Center" Text="Jordan YMCA MultFit" FontAttributes="Bold" />
-                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,40" FontSize="Medium" Text="Thank you for using the JYMF RaceDay mobile app.  Use of the app requires your Facebook login for your identification and to verify that you are a member of the JYMF Facebook group." />
-                    <Label HorizontalTextAlignment="Center" FontSize="Medium"  Text="Click the login button below to authorize this app to use your Facebook login." />
+                    <Label FontSize="Large" HorizontalOptions="Center" Text="Jordan YMCA MultFit" FontAttributes="Bold" Style="{StaticResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,40" FontSize="Medium" Text="Thank you for using the JYMF RaceDay mobile app.  Use of the app requires your Facebook login for your identification and to verify that you are a member of the JYMF Facebook group." Style="{StaticResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" FontSize="Medium"  Text="Click the login button below to authorize this app to use your Facebook login." Style="{StaticResource FontColor}" />
                 </StackLayout>
             </ScrollView>
             <Button x:Name="btnLogin" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Facebook Login" Style="{StaticResource loginButton}" Clicked="BtnLogin_Clicked" />

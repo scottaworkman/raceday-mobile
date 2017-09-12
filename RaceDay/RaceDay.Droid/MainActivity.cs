@@ -13,7 +13,7 @@ using HockeyApp.Android.Metrics;
 
 namespace RaceDay.Droid
 {
-    [Activity(Label = "RaceDay", Icon = "@drawable/icon", Theme = "@style/RaceDayTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "RaceDay", Icon = "@drawable/icon", Name = "com.workmanfamily.jymfraceday.MainActivity", Theme = "@style/RaceDayTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public const string HOCKEY_APP_ID = @"05f78d8a53b546719b0e563dae9de3fe";
@@ -26,10 +26,6 @@ namespace RaceDay.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-
-            DependencyService.Register<Toast>();
-            DependencyService.Register<Snackbar>();
-            DependencyService.Register<CookieReset>();
 
             Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);
 

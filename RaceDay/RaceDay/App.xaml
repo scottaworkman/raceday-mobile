@@ -6,6 +6,48 @@
 
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
+            <Style x:Key="PageStyle" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="#f5f5f5" />
+            </Style>
+            <Style x:Key="FontColor" TargetType="Label">
+                <Setter Property="TextColor" Value="#212121" />
+            </Style>
+            <Style x:Key="SmallLabel" TargetType="Label">
+                <Setter Property="TextColor">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double" iOS="15" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="MediumLabel" TargetType="Label">
+                <Setter Property="TextColor">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double" iOS="17" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="LargeLabel" TargetType="Label">
+                <Setter Property="TextColor">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double" iOS="20" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
 
     </Application.Resources>

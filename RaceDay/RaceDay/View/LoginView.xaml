@@ -4,3 +4,4 @@
              x:Class="RaceDay.View.LoginView"
              Title="Facebook Login">
 </ContentPage>
+    

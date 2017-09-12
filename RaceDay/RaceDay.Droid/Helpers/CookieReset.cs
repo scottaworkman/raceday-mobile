@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
+[assembly: Xamarin.Forms.Dependency(typeof(RaceDay.Droid.CookieReset))]
 namespace RaceDay.Droid
 {
     public class CookieReset : ICookieReset

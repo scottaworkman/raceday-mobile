@@ -79,7 +79,8 @@ namespace RaceDay.View
                 {
                     Text = "Checking Facebook Group Access",
                     HorizontalTextAlignment = TextAlignment.Center,
-                    Margin = new Thickness(0,20,0,20)
+                    Margin = new Thickness(0,20,0,20),
+                    TextColor = Color.FromHex("#212121")
                 };
 
                 // Use Facebook graph api to get user information just logged in and make sure they are a member of the group

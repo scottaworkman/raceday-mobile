@@ -18,8 +18,11 @@ namespace RaceDay.iOS
         {
             base.OnElementChanged(e);
 
-            UIFont font = Control.Font.WithSize(((RaceDay.Helpers.FontDatePicker)e.NewElement).FontSize);
-            Control.Font = font;
+            if ((Control != null) && (e.NewElement != null))
+            {
+                UIFont font = Control.Font.WithSize(((RaceDay.Helpers.FontDatePicker)e.NewElement).FontSize);
+                Control.Font = font;
+            }
         }
     }
 }

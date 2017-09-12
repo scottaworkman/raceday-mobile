@@ -28,14 +28,21 @@ namespace RaceDay.iOS
             if (Control != null && element != null)
             {
                 Placeholder = element.Placeholder;
-                Control.TextColor = UIColor.LightGray;
-                Control.Text = Placeholder;
+                if (element.Text == string.Empty)
+                {
+                    Control.TextColor = UIColor.LightGray;
+                    element.Text = Placeholder;
+                }
+
+                Control.Layer.CornerRadius = 6;
+                Control.Layer.BorderColor = Color.FromHex("F0F0F0").ToCGColor();
+                Control.Layer.BorderWidth = 2;
 
                 Control.ShouldBeginEditing += (UITextView textView) =>
                 {
                     if (textView.Text == Placeholder)
                     {
-                        textView.Text = "";
+                        textView.Text = string.Empty;
                         textView.TextColor = UIColor.Black;
                     }
 
@@ -44,7 +51,7 @@ namespace RaceDay.iOS
 
                 Control.ShouldEndEditing += (UITextView textView) =>
                 {
-                    if (textView.Text == "")
+                    if (textView.Text == string.Empty)
                     {
                         textView.Text = Placeholder;
                         textView.TextColor = UIColor.LightGray;
