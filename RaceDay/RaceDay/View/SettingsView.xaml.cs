@@ -51,6 +51,8 @@ namespace RaceDay.View
             Settings.UserName = "Your Account";
             Settings.UserEmail = string.Empty;
 
+            DependencyService.Get<IFacebook>()?.Logout();
+
             await Navigation.PushAsync(new InfoMain());
         }
 

@@ -1,5 +1,6 @@
 ﻿using Plugin.Connectivity;
 using RaceDay.Helpers;
+using RaceDay.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,15 +32,53 @@ namespace RaceDay.View
             }
         }
 
-        private async void BtnLogin_Clicked(object sender, EventArgs e)
+        protected async void Facebook_Login(object sender, FacebookLoginHandlerArgs args)
         {
-            if (!CrossConnectivity.Current.IsConnected)
+            loginButton.IsVisible = false;
+
+            var toast = DependencyService.Get<IToast>();
+            toast.Show(new ToastOptions { Text = "Checking Facebook Group Access", Duration = ToastDuration.Long });
+
+            // Use Facebook graph api to get user information just logged in and make sure they are a member of the group
+            //
+            FacebookClient fb = new FacebookClient(args.AccessToken);
+            await fb.GetUserProfile();
+            if (string.IsNullOrEmpty(fb.Id))
             {
-                await DisplayAlert("No Connection!", "No internet connection.  Internet is required to login.", "OK");
+                await DisplayAlert("Facebook Error", "Unable to obtain Facebook information", "Ok");
+                loginButton.IsVisible = true;
+                DependencyService.Get<IFacebook>()?.Logout();
                 return;
             }
 
-            await Navigation.PushAsync(new LoginView());
+            if (await fb.UserInGroup(Settings.GroupFacebookId) == false)
+            {
+                await DisplayAlert("Facebook Group Required", "It does not look as if you are a member of the " + Settings.GroupName + " group.  Access to RaceDay for this group is limited to group members.", "Ok");
+                loginButton.IsVisible = true;
+                DependencyService.Get<IFacebook>()?.Logout();
+                return;
+            }
+
+            // Store the User Id for future use and move on to the main page
+            //
+            Settings.UserId = fb.Id;
+            Settings.UserName = fb.Name;
+            Settings.UserEmail = fb.Email;
+
+            // Login Custom Event
+            //
+            HockeyApp.MetricsManager.TrackEvent("Login",
+                new Dictionary<string, string> {
+                        { "UID", Settings.UserId } },
+                new Dictionary<string, double>());
+
+            await Navigation.PushAsync(new EventTabs());
+        }
+
+        protected async void Facebook_Error(object sender, FacebookLoginHandlerArgs args)
+        {
+            await DisplayAlert("Facebook Login Error", args.ErrorMessage, "OK");
+            return;
         }
 
         private void ResetNavigationStack()

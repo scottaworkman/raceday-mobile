@@ -5,6 +5,8 @@ using System.Linq;
 using Foundation;
 using UIKit;
 using HockeyApp.iOS;
+using Facebook.CoreKit;
+using Facebook.LoginKit;
 
 namespace RaceDay.iOS
 {
@@ -49,7 +51,29 @@ namespace RaceDay.iOS
             UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(58, 169, 244);
             UISwitch.Appearance.OnTintColor = UIColor.FromRGB(58, 169, 244);
 
+            // Setup the Facebook SDK.
+            // Note the wiring of the ApplicationDelegate which was found on the Facebook developer documentation and
+            // is required for the Login button to communicate results after performing an app switch to the login
+            //
+            ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
+            Profile.EnableUpdatesOnAccessTokenChange(true);
+            Settings.AppID = NSBundle.MainBundle.ObjectForInfoDictionary("FacebookAppID").ToString();
+            Settings.DisplayName = NSBundle.MainBundle.ObjectForInfoDictionary("FacebookDisplayName").ToString();
+
             return base.FinishedLaunching(app, options);
+        }
+
+        // Override OpenUrl which is required to handle the results of the Login after switching app to Facebook or Safari
+        // Documented on Facebook Developer documentation
+        // https://developers.facebook.com/docs/facebook-login/ios/
+        //
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            bool handled = ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
+            if (handled)
+                return handled;
+
+            return base.OpenUrl(application, url, sourceApplication, annotation);
         }
     }
 }

@@ -69,6 +69,9 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bolts.AppLinks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -183,6 +186,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CookieReset.cs" />
+    <Compile Include="Helpers\Facebook.cs" />
+    <Compile Include="Helpers\FacebookLoginButtonRenderer.cs" />
     <Compile Include="Helpers\FloatingActionButtonViewRenderer.cs" />
     <Compile Include="Helpers\ExpandableEditorRenderer.cs" />
     <Compile Include="Helpers\FontDatePickerRenderer.cs" />

@@ -30,11 +30,7 @@ using Android.App;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // Facebook SDK identification
-#if DEBUG
-    [assembly: MetaData("com.facebook.sdk.ApplicationId", Value = "@string/dev_app_id")]
-#else
-    [assembly: MetaData("com.facebook.sdk.ApplicationId", Value = "@string/app_id")]
-#endif
+[assembly: MetaData("com.facebook.sdk.ApplicationId", Value = "@string/app_id")]
 [assembly: MetaData("com.facebook.sdk.ApplicationName", Value = "@string/app_name")]
 
 // Add some common permissions, these can be removed if not needed
