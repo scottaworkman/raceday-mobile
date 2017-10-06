@@ -6,6 +6,9 @@
 
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
+            <Color x:Key="BlackColor">#000000</Color>
+            <Color x:Key="SilverColor">#cccccc</Color>
+            <Color x:Key="ErrorColor">#ff5252</Color>
             <Style x:Key="PageStyle" TargetType="ContentPage">
                 <Setter Property="BackgroundColor" Value="#f5f5f5" />
             </Style>

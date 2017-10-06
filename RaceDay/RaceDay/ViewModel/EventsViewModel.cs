@@ -10,6 +10,7 @@ using RaceDay.Services;
 using Xamarin.Forms;
 using RaceDay.Helpers;
 using System.Collections.Generic;
+using RaceDay.ViewModel.Base;
 
 namespace RaceDay.ViewModel
 {
@@ -17,7 +18,7 @@ namespace RaceDay.ViewModel
     /// Shared View Model so that changes to detail pages can be shared back to the list of events
     /// </summary>
     /// 
-    public class EventsViewModel : INotifyPropertyChanged
+    public class EventsViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public ObservableCollection<Event> Events { get; set; }
         public ObservableCollection<Event> MyEvents { get; set; }
@@ -69,14 +70,11 @@ namespace RaceDay.ViewModel
         /// Busy flag to prevent multiple calls while the async tasks are working
         /// </summary>
         /// 
-        private bool busy = false;
-        public bool IsBusy
+        public override bool IsBusy
         {
-            get { return busy; }
             set
             {
-                busy = value;
-                OnPropertyChanged();
+                base.IsBusy = value;
 
                 GetEventsCommand.ChangeCanExecute();
                 GetParticipantsCommand.ChangeCanExecute();
@@ -363,22 +361,6 @@ namespace RaceDay.ViewModel
                 EventInfo.Url = "http://" + EventInfo.Url;
 
             return true;
-        }
-
-        /// <summary>
-        /// PropertyChanged event handler used to identify UI when binding context changes
-        /// </summary>
-        /// 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            var changed = PropertyChanged;
-
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

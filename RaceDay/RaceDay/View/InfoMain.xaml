@@ -23,7 +23,7 @@
             </ScrollView>
             <controls:FacebookLoginButton x:Name="loginButton"  HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10" OnFacebookLogin="Facebook_Login" OnFacebookError="Facebook_Error">
                 <controls:FacebookLoginButton.HeightRequest>
-                    <OnPlatform x:TypeArguments="x:Double" iOS="36" />
+                    <OnPlatform x:TypeArguments="x:Double" iOS="36" Android="-1" />
                 </controls:FacebookLoginButton.HeightRequest>
             </controls:FacebookLoginButton>
         </Grid>

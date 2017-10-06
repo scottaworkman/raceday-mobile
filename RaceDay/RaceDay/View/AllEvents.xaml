@@ -10,7 +10,7 @@
             <ListView x:Name="ListViewEvents" ItemsSource="{Binding Events}" HasUnevenRows="True" IsPullToRefreshEnabled="True" RefreshCommand="{Binding GetEventsCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" SeparatorColor="Transparent" SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <ViewCell BindingContextChanged="ListViewEvents_BindingContextChanged">
                             <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="#bdbdbd">
                                 <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0.4">
                                     <StackLayout.BackgroundColor>

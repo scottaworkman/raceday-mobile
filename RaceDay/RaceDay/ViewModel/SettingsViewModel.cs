@@ -9,6 +9,7 @@ using RaceDay.Model;
 using RaceDay.Services;
 using Xamarin.Forms;
 using RaceDay.Helpers;
+using RaceDay.ViewModel.Base;
 
 namespace RaceDay.ViewModel
 {
@@ -16,7 +17,7 @@ namespace RaceDay.ViewModel
     /// Simple view model for settings view
     /// </summary>
     /// 
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public bool NotifyNewRace { get; set; }
         public bool NotifyParticipantJoins { get; set; }
@@ -24,37 +25,6 @@ namespace RaceDay.ViewModel
 
         public SettingsViewModel()
         {
-        }
-
-        /// <summary>
-        /// Busy flag to prevent multiple calls while the async tasks are working
-        /// </summary>
-        /// 
-        private bool busy = false;
-        public bool IsBusy
-        {
-            get { return busy; }
-            set
-            {
-                busy = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// PropertyChanged event handler used to identify UI when binding context changes
-        /// </summary>
-        /// 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            var changed = PropertyChanged;
-
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
