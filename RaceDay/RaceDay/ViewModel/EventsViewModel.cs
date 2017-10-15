@@ -31,6 +31,7 @@ namespace RaceDay.ViewModel
         public Command GetAttendingCommand { get; set; }
         public Command AddEventCommand { get; set; }
         public Command DeleteEventCommand { get; set; }
+        public Command DeleteEventItemCommand { get; set; }
         public Command UpdateEventCommand { get; set; }
 
         public FloatingActionButtonView FAButton { get; set; }
@@ -61,6 +62,9 @@ namespace RaceDay.ViewModel
             DeleteEventCommand = new Command<ContentPage>(
                 async (page) => await DeleteEvent(page),
                 (page) => !IsBusy);
+            DeleteEventItemCommand = new Command<int>(
+                async (eventId) => await DeleteEventItem(eventId),
+                (eventId) => !IsBusy);
             UpdateEventCommand = new Command<ContentPage>(
                 async (page) => await UpdateEvent(page),
                 (page) => !IsBusy);
@@ -263,6 +267,25 @@ namespace RaceDay.ViewModel
             });
         }
 
+        async Task DeleteEventItem(int eventId)
+        {
+            await ExecuteCommand(async () =>
+            {
+                if (await RaceDayClient.DeleteEvent(eventId) == false)
+                {
+                    await App.Current.MainPage.DisplayAlert("Application Error", "Unable to delete event", "Ok");
+                    return;
+                }
+
+                Events.DeleteEvent(eventId);
+                MyEvents.DeleteEvent(eventId);
+
+                var snack = DependencyService.Get<ISnackbar>();
+                await snack.Show(new SnackbarOptions { Text = "Event deleted", Duration = SnackbarDuration.Short });
+                await Task.Delay(1500);
+            });
+        }
+
         /// <summary>
         /// Command to update event through API.  Data was validated from the view
         /// </summary>
@@ -280,7 +303,9 @@ namespace RaceDay.ViewModel
 
                 OnPropertyChanged(nameof(EventInfo));
                 Events.RefreshEvents();
+                OnPropertyChanged(nameof(Events));
                 MyEvents.RefreshEvents();
+                OnPropertyChanged(nameof(MyEvents));
 
                 var snack = DependencyService.Get<ISnackbar>();
                 await snack.Show(new SnackbarOptions { Text = "Event information updated", Duration = SnackbarDuration.Short });

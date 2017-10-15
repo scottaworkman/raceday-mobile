@@ -91,6 +91,37 @@ namespace RaceDay.View
                     if (await this.DisplayAlert("Delete Event?",
                           "Are you sure you want to delete '" + race.Name + "'?", "Yes", "Cancel") == true)
                     {
+                        if (BindingContext is EventsViewModel vm)
+                        {
+                            if (vm.DeleteEventItemCommand.CanExecute(race.EventId))
+                                vm.DeleteEventItemCommand.Execute(race.EventId);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                ListViewEvents.SelectedItem = null;
+            }
+        }
+
+        /// <summary>
+        /// Allow app admins or event creators to edit the event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        private void ListViewEvents_Edit(object sender, EventArgs e)
+        {
+            try
+            {
+                MenuItem item = (MenuItem)sender;
+                if (item.CommandParameter is Event race)
+                {
+                    if (BindingContext is EventsViewModel vm)
+                    {
+                        vm.EventInfo = race;
+                        Navigation.PushAsync(new AddEvent(vm.EventInfo, vm));
                     }
                 }
             }
@@ -116,9 +147,26 @@ namespace RaceDay.View
             ViewCell eventCell = (ViewCell)sender;
             foreach (var action in eventCell.ContextActions)
             {
-                action.Clicked -= ListViewEvents_Delete;
+                if (action.Text == "Delete")
+                    action.Clicked -= ListViewEvents_Delete;
+                else if (action.Text == "Edit")
+                    action.Clicked -= ListViewEvents_Edit;
             }
             eventCell.ContextActions.Clear();
+
+            if ((Device.RuntimePlatform == Device.Android) &&
+                ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || (Settings.UserId == ((Event)eventCell.BindingContext).CreatorId)))
+            {
+                var menu = new MenuItem()
+                {
+                    Text = "Edit",
+                    Icon = "ic_create.png",
+                    IsDestructive = false,
+                    CommandParameter = eventCell.BindingContext
+                };
+                menu.Clicked += ListViewEvents_Edit;
+                eventCell.ContextActions.Add(menu);
+            }
 
             if (Settings.AccessRole == (int)Settings.ApplicationRole.Admin)
             {
