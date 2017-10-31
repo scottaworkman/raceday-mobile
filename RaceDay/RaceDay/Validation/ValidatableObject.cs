@@ -39,6 +39,17 @@ namespace RaceDay.Validation
             }
         }
 
+        public string StringValue
+        {
+            get
+            {
+                if (_value == null)
+                    return string.Empty;
+
+                return _value.ToString();
+            }
+        }
+
         public bool IsValid
         {
             get

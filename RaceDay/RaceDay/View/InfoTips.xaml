@@ -5,7 +5,7 @@
              Title="Application Help">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
-                iOS="10, 20, 10, 10" />
+                iOS="10, 20, 10, 10" Android="10, 0, 10, 10" />
     </ContentPage.Padding>
     <ContentPage.Resources>
         <ResourceDictionary>

@@ -65,12 +65,12 @@ namespace RaceDay.View
 
             // Data Cleanup
             //
-            if (!string.IsNullOrEmpty(vm.EventUrl.Value.Trim()) && vm.EventUrl.Value.ToLower().StartsWith("http://") == false && vm.EventUrl.Value.ToLower().StartsWith("https://") == false)
+            if (!string.IsNullOrEmpty(vm.EventUrl.StringValue.Trim()) && vm.EventUrl.StringValue.ToLower().StartsWith("http://") == false && vm.EventUrl.StringValue.ToLower().StartsWith("https://") == false)
                 vm.EventUrl.Value = "http://" + vm.EventUrl.Value;
 
             // Check for placeholder text in the description from the iOS renderer
             //
-            if (vm.EventDescription.Value == txtDescription.Placeholder)
+            if (vm.EventDescription.StringValue == txtDescription.Placeholder)
                 vm.EventDescription.Value = string.Empty;
 
             // Validation must occur here as we can't wait on the command
@@ -87,13 +87,13 @@ namespace RaceDay.View
                 return;
             }
 
-            // Setup the parent list view with the information from th edit view model
+            // Setup the parent list view with the information from the edit view model
             //
-            eventDetail.Name = vm.EventName.Value.Trim();
+            eventDetail.Name = vm.EventName.StringValue.Trim();
             eventDetail.Date = vm.EventDate.Value;
-            eventDetail.Location = vm.EventLocation.Value.Trim();
-            eventDetail.Url = vm.EventUrl.Value.Trim();
-            eventDetail.Description = vm.EventDescription.Value.Trim();
+            eventDetail.Location = vm.EventLocation.StringValue.Trim();
+            eventDetail.Url = vm.EventUrl.StringValue.Trim();
+            eventDetail.Description = vm.EventDescription.StringValue.Trim();
 
             eventListView.EventInfo = eventDetail;
 

@@ -14,7 +14,7 @@ namespace RaceDay.Validation
         {
             if (value == null)
             {
-                return false;
+                return true;
             }
 
             var str = value as string;

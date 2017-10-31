@@ -40,7 +40,7 @@
                     <OnPlatform x:TypeArguments="Color" iOS="{StaticResource SilverColor}" Android="{StaticResource BlackColor}" />
                 </Setter>
                 <Setter Property="HeightRequest">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="30" Android="38" />
+                    <OnPlatform x:TypeArguments="x:Double" iOS="30" Android="40" />
                 </Setter>
             </Style>
             <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
@@ -59,7 +59,7 @@
     </ContentPage.Resources>
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
-                iOS="10, 20, 10, 10" />
+                iOS="10, 20, 10, 10" Android="10, 0, 10, 10" />
     </ContentPage.Padding>
     <ContentPage.Content>
         <Grid x:Name="createGrid" RowSpacing="2" ColumnSpacing="2">
