@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIRequiredDeviceCapabilities</key>
+	<dict/>
+	<key>drmVersionNumber</key>
+	<integer>0</integer>
+	<key>fileExtension</key>
+	<string>.app</string>
+	<key>gameCenterEnabled</key>
+	<false/>
+	<key>gameCenterEverEnabled</key>
+	<false/>
+	<key>kind</key>
+	<string>software</string>
+	<key>s</key>
+	<integer>143441</integer>
+	<key>softwareIconNeedsShine</key>
+	<false/>
+	<key>softwareSupportedDeviceIds</key>
+	<array>
+		<integer>9</integer>
+	</array>
+	<key>versionRestrictions</key>
+	<integer>16843008</integer>
+	<key>artistName</key>
+	<string>Scott Workman</string>
+	<key>bundleDisplayName</key>
+	<string>JYMF RaceDay</string>
+	<key>bundleShortVersionString</key>
+	<string>1.0.14</string>
+	<key>bundleVersion</key>
+	<string>1.0.14</string>
+	<key>copyright</key>
+	<string>© 2017 Scott Workman</string>
+	<key>genre</key>
+	<string>Health &amp; Fitness</string>
+	<key>genreId</key>
+	<integer>6013</integer>
+	<key>itemName</key>
+	<string>JYMF RaceDay</string>
+	<key>playlistArtistName</key>
+	<string>Scott Workman</string>
+	<key>playlistName</key>
+	<string>JYMF RaceDay</string>
+	<key>releaseDate</key>
+	<string>2017-11-20T10:00:00Z</string>
+	<key>softwareVersionBundleId</key>
+	<string>com.workmanfamily.jymfraceday</string>
+</dict>
+</plist>

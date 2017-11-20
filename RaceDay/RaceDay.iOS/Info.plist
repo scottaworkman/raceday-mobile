@@ -27,7 +27,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.workmanfamily.jymfraceday</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon-60@2x</string>
@@ -51,7 +51,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1.0</string>
+	<string>1.0.14</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -61,6 +61,8 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To attach a photo to your feedback, we need access to your Photo Library.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>XSLaunchImageAssets</key>
 	<string>Resources/Media.xcassets/LaunchImages.launchimage</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
