@@ -10,6 +10,7 @@ using Xamarin.Facebook.Login.Widget;
 using System;
 using Android.Runtime;
 using Plugin.CurrentActivity;
+using Android.Content;
 
 [assembly: ExportRenderer(typeof(FacebookLoginButton), typeof(FacebookLoginButtonRenderer))]
 namespace RaceDay.Droid.Helpers
@@ -18,14 +19,20 @@ namespace RaceDay.Droid.Helpers
     //
     public class FacebookLoginButtonRenderer : ViewRenderer<FacebookLoginButton, LoginButton>
     {
+        Context viewContext;
         LoginButton facebookLoginButton;
+
+        public FacebookLoginButtonRenderer(Context context) : base(context)
+        {
+            viewContext = context;
+        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<FacebookLoginButton> e)
         {
             base.OnElementChanged(e);
             if (Control == null || facebookLoginButton == null)
             {
-                facebookLoginButton = new LoginButton(Forms.Context);
+                facebookLoginButton = new LoginButton(viewContext);
                 facebookLoginButton.SetTextSize(Android.Util.ComplexUnitType.Sp, 18);
                 facebookLoginButton.SetPadding(36, 36, 36, 36);
                 SetNativeControl(facebookLoginButton);

@@ -20,8 +20,12 @@ using System.ComponentModel;
 namespace RaceDay.Droid
 {
    public class ExpandableEditorRenderer : EditorRenderer
-    {
-        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.Editor> e)
+   {
+        public ExpandableEditorRenderer(Context context) : base(context)
+        {
+        }
+
+        protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             base.OnElementChanged(e);
 
@@ -29,7 +33,9 @@ namespace RaceDay.Droid
             {
                 var element = e.NewElement as ExpandableEditor;
                 if (!string.IsNullOrEmpty(element.Placeholder))
-                    this.Control.Hint = element.Placeholder;
+                {
+                    Control.Hint = element.Placeholder;
+                }
             }
         }
 
@@ -41,7 +47,9 @@ namespace RaceDay.Droid
             {
                 var element = this.Element as ExpandableEditor;
                 if (!string.IsNullOrEmpty(element.Placeholder))
-                    this.Control.Hint = element.Placeholder;
+                {
+                    Control.Hint = element.Placeholder;
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -16,6 +17,54 @@ namespace RaceDay.Services
         private const string COMMAND_LOGIN = "login";
         private const string COMMAND_EVENT = "event";
         private const string COMMAND_ATTEND = "attend";
+        private const string COMMAND_USER = "mfuser";
+
+        /// <summary>
+        /// Makes sure the current user is in the server API
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        /// 
+        public static async Task AddUser(string id, string name, string email)
+        {
+            var token = await AppToken();
+            if (token == null)
+                return;
+
+            JsonUser user = new JsonUser
+            {
+                UserId = id,
+                Name = name,
+                Email = email,
+                LastUpdate = DateTime.Now
+            };
+            string[] nameparts = name.Split(' ');
+            if (nameparts.Length >= 2)
+            {
+                user.FirstName = nameparts[0];
+                user.LastName = nameparts[1];
+                for(int i = 2; i < nameparts.Length; i++)
+                {
+                    user.LastName += " " + nameparts[i];
+                }
+            }
+
+            RestClient client = new RestClient(API_ENDPOINT);
+            client.AddHeader("Authorization", "Bearer " + token.Token);
+            await client.PostApi<string>(COMMAND_USER, user, HttpStatusCode.Created);
+            if (client.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                token = await Authorize();
+                if (token != null)
+                {
+                    client.ClearHeaders();
+                    client.AddHeader("Authorization", "Bearer " + token.Token);
+                    await client.PostApi<string>(COMMAND_USER, user, HttpStatusCode.Created);
+                }
+            }
+        }
 
         /// <summary>
         /// Get the list of all upcoming events

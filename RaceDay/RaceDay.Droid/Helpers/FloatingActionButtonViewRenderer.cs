@@ -8,6 +8,7 @@ using Android.Views;
 using System.IO;
 using Android.Support.Design.Widget;
 using Android.Content.Res;
+using Android.Content;
 
 [assembly: ExportRenderer(typeof(FloatingActionButtonView), typeof(FloatingActionButtonViewRenderer))]
 
@@ -25,9 +26,9 @@ namespace RaceDay.Droid
         private readonly Android.Content.Context context;
         private readonly FloatingActionButton fab;
 
-        public FloatingActionButtonViewRenderer()
+        public FloatingActionButtonViewRenderer(Context _context) : base(_context)
         {
-            context = Xamarin.Forms.Forms.Context;
+            context = _context;
 
             float d = context.Resources.DisplayMetrics.Density;
             var margin = (int)(MARGIN_DIPS * d); // margin in pixels

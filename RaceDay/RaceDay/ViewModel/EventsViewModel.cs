@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using RaceDay.Helpers;
 using System.Collections.Generic;
 using RaceDay.ViewModel.Base;
+using Microsoft.AppCenter.Analytics;
 
 namespace RaceDay.ViewModel
 {
@@ -18,7 +19,7 @@ namespace RaceDay.ViewModel
     /// Shared View Model so that changes to detail pages can be shared back to the list of events
     /// </summary>
     /// 
-    public class EventsViewModel : ViewModelBase, INotifyPropertyChanged
+    public class EventsViewModel : ExtendedBindableObject, INotifyPropertyChanged
     {
         public ObservableCollection<Event> Events { get; set; }
         public ObservableCollection<Event> MyEvents { get; set; }
@@ -74,11 +75,18 @@ namespace RaceDay.ViewModel
         /// Busy flag to prevent multiple calls while the async tasks are working
         /// </summary>
         /// 
-        public override bool IsBusy
+        private bool _isBusy;
+
+        public bool IsBusy
         {
+            get
+            {
+                return _isBusy;
+            }
             set
             {
-                base.IsBusy = value;
+                _isBusy = value;
+                RaisePropertyChanged(() => IsBusy);
 
                 GetEventsCommand.ChangeCanExecute();
                 GetParticipantsCommand.ChangeCanExecute();
@@ -220,12 +228,12 @@ namespace RaceDay.ViewModel
                 Events.AddEvent(newEvent.eventinfo);
                 MyEvents.AddEvent(newEvent.eventinfo);
 
-                HockeyApp.MetricsManager.TrackEvent("Event Added", 
+                Analytics.TrackEvent("Event Added",
                     new Dictionary<string, string> {
                         { "Name", newEvent.eventinfo.Name },
                         { "Date", newEvent.eventinfo.Date.ToString("MM/dd/yyyy") },
-                        { "UID", newEvent.eventinfo.CreatorId } }, 
-                    new Dictionary<string, double>());
+                        { "UID", newEvent.eventinfo.CreatorId } }
+                    );
 
                 var snack = DependencyService.Get<ISnackbar>();
                 await snack.Show(new SnackbarOptions { Text = "New event added", Duration = SnackbarDuration.Short });

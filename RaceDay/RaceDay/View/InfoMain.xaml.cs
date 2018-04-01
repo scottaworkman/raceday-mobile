@@ -1,4 +1,5 @@
-﻿using Plugin.Connectivity;
+﻿using Microsoft.AppCenter.Analytics;
+using Plugin.Connectivity;
 using RaceDay.Helpers;
 using RaceDay.Services;
 using System;
@@ -35,9 +36,7 @@ namespace RaceDay.View
         protected async void Facebook_Login(object sender, FacebookLoginHandlerArgs args)
         {
             loginButton.IsVisible = false;
-
-            var toast = DependencyService.Get<IToast>();
-            toast.Show(new ToastOptions { Text = "Checking Facebook Group Access", Duration = ToastDuration.Long });
+            FacebookAccess.IsVisible = true;
 
             // Use Facebook graph api to get user information just logged in and make sure they are a member of the group
             //
@@ -47,6 +46,7 @@ namespace RaceDay.View
             {
                 await DisplayAlert("Facebook Error", "Unable to obtain Facebook information", "Ok");
                 loginButton.IsVisible = true;
+                FacebookAccess.IsVisible = false;
                 DependencyService.Get<IFacebook>()?.Logout();
                 return;
             }
@@ -55,6 +55,7 @@ namespace RaceDay.View
             {
                 await DisplayAlert("Facebook Group Required", "It does not look as if you are a member of the " + Settings.GroupName + " group.  Access to RaceDay for this group is limited to group members.", "Ok");
                 loginButton.IsVisible = true;
+                FacebookAccess.IsVisible = false;
                 DependencyService.Get<IFacebook>()?.Logout();
                 return;
             }
@@ -65,14 +66,18 @@ namespace RaceDay.View
             Settings.UserName = fb.Name;
             Settings.UserEmail = fb.Email;
 
+            // Make sure this user is in the server API
+            //
+            await RaceDayClient.AddUser(fb.Id, fb.Name, fb.Email);
+
             // Login Custom Event
             //
-            HockeyApp.MetricsManager.TrackEvent("Login",
-                new Dictionary<string, string> {
-                        { "UID", Settings.UserId } },
-                new Dictionary<string, double>());
+            Analytics.TrackEvent("Login",
+                    new Dictionary<string, string> {
+                            { "UID", Settings.UserId } }
+                    );
 
-            await Navigation.PushAsync(new EventTabs());
+            await Navigation.PushAsync(new EventTabs(), false);
         }
 
         protected async void Facebook_Error(object sender, FacebookLoginHandlerArgs args)

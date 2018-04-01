@@ -8,8 +8,6 @@ using Android.Widget;
 using Android.OS;
 using Xamarin.Forms;
 using Android.Content;
-using HockeyApp.Android;
-using HockeyApp.Android.Metrics;
 using Xamarin.Facebook;
 using RaceDay.Droid.Helpers;
 using Xamarin.Facebook.Login;
@@ -20,7 +18,6 @@ namespace RaceDay.Droid
     [Activity(Label = "RaceDay", Icon = "@drawable/icon", Name = "com.workmanfamily.jymfraceday.MainActivity", Theme = "@style/RaceDayTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        public const string HOCKEY_APP_ID = @"05f78d8a53b546719b0e563dae9de3fe";
         ICallbackManager callbackManager;
 
         public event FacebookLoginHandler OnFacebookLogin;
@@ -38,11 +35,6 @@ namespace RaceDay.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);
-
-            // Hockey App Metrics management initialization
-            //
-            MetricsManager.Register(Application, HOCKEY_APP_ID);
-            MetricsManager.EnableUserMetrics();
 
             // Facebook SDK login callback actions.  Callback manager handled in a central location for
             // the control of login actions.  Well check to see who else has registered with us to bubble the
@@ -84,7 +76,6 @@ namespace RaceDay.Droid
         protected override void OnResume()
         {
             base.OnResume();
-            CrashManager.Register(this, HOCKEY_APP_ID);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)

@@ -144,41 +144,43 @@ namespace RaceDay.View
             if (BindingContext == null)
                 return;
 
-            ViewCell eventCell = (ViewCell)sender;
-            foreach (var action in eventCell.ContextActions)
+            if (sender is ViewCell eventCell)
             {
-                if (action.Text == "Delete")
-                    action.Clicked -= ListViewEvents_Delete;
-                else if (action.Text == "Edit")
-                    action.Clicked -= ListViewEvents_Edit;
-            }
-            eventCell.ContextActions.Clear();
-
-            if ((Device.RuntimePlatform == Device.Android) &&
-                ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || (Settings.UserId == ((Event)eventCell.BindingContext).CreatorId)))
-            {
-                var menu = new MenuItem()
+                foreach (var action in eventCell.ContextActions)
                 {
-                    Text = "Edit",
-                    Icon = "ic_create.png",
-                    IsDestructive = false,
-                    CommandParameter = eventCell.BindingContext
-                };
-                menu.Clicked += ListViewEvents_Edit;
-                eventCell.ContextActions.Add(menu);
-            }
+                    if (action.Text == "Delete")
+                        action.Clicked -= ListViewEvents_Delete;
+                    else if (action.Text == "Edit")
+                        action.Clicked -= ListViewEvents_Edit;
+                }
+                eventCell.ContextActions.Clear();
 
-            if (Settings.AccessRole == (int)Settings.ApplicationRole.Admin)
-            {
-                var menu = new MenuItem()
+                if ((Device.RuntimePlatform == Device.Android) &&
+                    ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || (Settings.UserId == ((Event)eventCell.BindingContext).CreatorId)))
                 {
-                    Text = "Delete",
-                    Icon = "ic_delete.png",
-                    IsDestructive = true,
-                    CommandParameter = eventCell.BindingContext
-                };
-                menu.Clicked += ListViewEvents_Delete;
-                eventCell.ContextActions.Add(menu);
+                    var menu = new MenuItem()
+                    {
+                        Text = "Edit",
+                        Icon = "ic_create.png",
+                        IsDestructive = false,
+                        CommandParameter = eventCell.BindingContext
+                    };
+                    menu.Clicked += ListViewEvents_Edit;
+                    eventCell.ContextActions.Add(menu);
+                }
+
+                if (Settings.AccessRole == (int)Settings.ApplicationRole.Admin)
+                {
+                    var menu = new MenuItem()
+                    {
+                        Text = "Delete",
+                        Icon = "ic_delete.png",
+                        IsDestructive = true,
+                        CommandParameter = eventCell.BindingContext
+                    };
+                    menu.Clicked += ListViewEvents_Delete;
+                    eventCell.ContextActions.Add(menu);
+                }
             }
         }
     }

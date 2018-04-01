@@ -4,7 +4,6 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CurrentActivity;
-using HockeyApp;
 using System.Collections.Generic;
 
 namespace RaceDay.Droid

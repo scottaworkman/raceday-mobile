@@ -21,6 +21,11 @@ namespace RaceDay.Droid
 {
    public class FontDatePickerRenderer : DatePickerRenderer
     {
+
+        public FontDatePickerRenderer(Context context) : base(context)
+        {
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.DatePicker> e)
         {
             base.OnElementChanged(e);

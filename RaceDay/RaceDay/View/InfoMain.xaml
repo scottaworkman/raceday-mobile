@@ -19,6 +19,7 @@
                     <Label FontSize="Large" HorizontalOptions="Center" Text="Jordan YMCA MultFit" FontAttributes="Bold" Style="{StaticResource FontColor}" />
                     <Label HorizontalTextAlignment="Center" Margin="0,20,0,40" FontSize="Medium" Text="Thank you for using the JYMF RaceDay mobile app.  Use of the app requires your Facebook login for your identification and to verify that you are a member of the JYMF Facebook group." Style="{StaticResource FontColor}" />
                     <Label HorizontalTextAlignment="Center" FontSize="Medium"  Text="Click the login button below to authorize this app to use your Facebook login." Style="{StaticResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" FontSize="Large" Margin="0,20,0,0" FontAttributes="Bold" Text="Checking Facebook Group Access" Style="{StaticResource FontColor}" x:Name="FacebookAccess" IsVisible="False" />
                 </StackLayout>
             </ScrollView>
             <controls:FacebookLoginButton x:Name="loginButton"  HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10" OnFacebookLogin="Facebook_Login" OnFacebookError="Facebook_Error">
