@@ -46,6 +46,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -220,4 +223,18 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>IF EXIST "$(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" ( 
+    ren $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak
+
+    ren $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs 
+)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>IF EXIST "$(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" ( 
+   ren $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private
+
+   ren $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak $(SolutionDir)\RaceDay\RaceDay\Helpers\SettingsDefaults.cs 
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
