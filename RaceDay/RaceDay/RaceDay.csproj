@@ -224,15 +224,13 @@
     <Error Condition="!Exists('..\..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.5.0.122203\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" ( 
-    ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs" "SettingsDefaults.cs.bak"
-    ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" "SettingsDefaults.cs" 
-)</PreBuildEvent>
+    <PreBuildEvent>IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs" "SettingsDefaults.cs.bak"
+IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.private" "SettingsDefaults.cs" 
+</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" ( 
-   ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs" "SettingsDefaults.cs.private"
-   ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" "SettingsDefaults.cs" 
-)</PostBuildEvent>
+    <PostBuildEvent>IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs" "SettingsDefaults.cs.private"
+IF EXIST "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" ren "$(SolutionDir)RaceDay\RaceDay\Helpers\SettingsDefaults.cs.bak" "SettingsDefaults.cs"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
