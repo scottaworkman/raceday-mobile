@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
-sed -i "s/RACEDAY_GROUP_NAME/$RACEDAY_GROUP_NAME/g" $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
-sed -i "s/RACEDAY_GROUP_CODE/$RACEDAY_GROUP_CODE/g" $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
-sed -i "s/RACEDAY_FACEBOOK_GROUP/$RACEDAY_FACEBOOK_GROUP/g" $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
-sed -i "s/RACEDAY_GROUP_API/$RACEDAY_GROUP_API/g" $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
-sed -i "s/RACEDAY_FACEBOOK_APP/$RACEDAY_FACEBOOK_APP/g" $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
-
-cat $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
+cat <<EOT >> $APPCENTER_SOURCE_DIRECTORY/RaceDay/RaceDay/Helpers/SettingsDefaults.cs
+namespace RaceDay.Helpers
+{
+    public static class SettingsDefaults
+    {
+        public static readonly string GroupNameDefault = "$RACEDAY_GROUP_NAMEMultiFit";
+        public static readonly string GroupCodeDefault = "$RACEDAY_GROUP_CODE";
+        public static readonly string GroupFacebookIdDefault = "$RACEDAY_FACEBOOK_GROUP";
+        public static readonly string GroupApiDefault = "$RACEDAY_GROUP_API";
+        public static readonly string UserIdDefault = string.Empty;
+        public static readonly string UserNameDefault = "Your Account";
+        public static readonly string UserEmailDefault = string.Empty;
+        public static readonly string FacebookAppIdDefault = "$RACEDAY_FACEBOOK_APP";
+    }
+}
+EOT
