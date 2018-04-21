@@ -45,6 +45,10 @@ namespace RaceDay.Helpers
 
         private const string UserNameKey = "username_key";
 
+        private const string UserFirstNameKey = "userfirstname_key";
+
+        private const string UserLastNameKey = "userlastname_key";
+
         private const string UserEmailKey = "useremail_key";
 
         private const string FacebookAppIdKey = "facebookappid_key";
@@ -142,6 +146,30 @@ namespace RaceDay.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(UserNameKey, value);
+            }
+        }
+
+        public static string UserFirstName
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(UserFirstNameKey, String.Empty);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(UserFirstNameKey, value);
+            }
+        }
+
+        public static string UserLastName
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(UserLastNameKey, String.Empty);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(UserLastNameKey, value);
             }
         }
 

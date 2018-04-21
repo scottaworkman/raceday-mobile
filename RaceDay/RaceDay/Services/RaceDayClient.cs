@@ -27,7 +27,7 @@ namespace RaceDay.Services
         /// <param name="email"></param>
         /// <returns></returns>
         /// 
-        public static async Task AddUser(string id, string name, string email)
+        public static async Task AddUser(string id, string name, string firstname, string lastname, string email)
         {
             var token = await AppToken();
             if (token == null)
@@ -37,17 +37,22 @@ namespace RaceDay.Services
             {
                 UserId = id,
                 Name = name,
+                FirstName = firstname,
+                LastName = lastname,
                 Email = email,
                 LastUpdate = DateTime.Now
             };
-            string[] nameparts = name.Split(' ');
-            if (nameparts.Length >= 2)
+            if (string.IsNullOrEmpty(firstname) && string.IsNullOrEmpty(lastname))
             {
-                user.FirstName = nameparts[0];
-                user.LastName = nameparts[1];
-                for(int i = 2; i < nameparts.Length; i++)
+                string[] nameparts = name.Split(' ');
+                if (nameparts.Length >= 2)
                 {
-                    user.LastName += " " + nameparts[i];
+                    user.FirstName = nameparts[0];
+                    user.LastName = nameparts[1];
+                    for (int i = 2; i < nameparts.Length; i++)
+                    {
+                        user.LastName += " " + nameparts[i];
+                    }
                 }
             }
 

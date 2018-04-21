@@ -51,24 +51,17 @@ namespace RaceDay.View
                 return;
             }
 
-            if (await fb.UserInGroup(Settings.GroupFacebookId) == false)
-            {
-                await DisplayAlert("Facebook Group Required", "It does not look as if you are a member of the " + Settings.GroupName + " group.  Access to RaceDay for this group is limited to group members.", "Ok");
-                loginButton.IsVisible = true;
-                FacebookAccess.IsVisible = false;
-                DependencyService.Get<IFacebook>()?.Logout();
-                return;
-            }
-
             // Store the User Id for future use and move on to the main page
             //
             Settings.UserId = fb.Id;
             Settings.UserName = fb.Name;
+            Settings.UserFirstName = fb.FirstName;
+            Settings.UserLastName = fb.LastName;
             Settings.UserEmail = fb.Email;
 
             // Make sure this user is in the server API
             //
-            await RaceDayClient.AddUser(fb.Id, fb.Name, fb.Email);
+            await RaceDayClient.AddUser(fb.Id, fb.Name, fb.FirstName, fb.LastName, fb.Email);
 
             // Login Custom Event
             //

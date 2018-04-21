@@ -20,6 +20,8 @@ namespace RaceDay.Services
 
         public string Id { get; set; }
         public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
 
         /// <summary>
@@ -42,11 +44,13 @@ namespace RaceDay.Services
             try
             {
                 RestClient client = new RestClient(GRAPH_ENDPOINT);
-                var me = await client.GetApi<FacebookMe>("me?fields=id,name,email&access_token=" + WebUtility.UrlEncode(AccessToken));
+                var me = await client.GetApi<FacebookMe>("me?fields=id,name,first_name,last_name,email&access_token=" + WebUtility.UrlEncode(AccessToken));
                 if (me != null)
                 {
                     Id = me.id;
                     Name = me.name;
+                    FirstName = me.first_name;
+                    LastName = me.last_name;
                     Email = me.email;
                 }
             }
@@ -54,6 +58,8 @@ namespace RaceDay.Services
             {
                 Id = string.Empty;
                 Name = string.Empty;
+                FirstName = string.Empty;
+                LastName = string.Empty;
                 Email = string.Empty;
             }
 
