@@ -156,7 +156,7 @@ namespace RaceDay.View
                 eventCell.ContextActions.Clear();
 
                 if ((Device.RuntimePlatform == Device.Android) &&
-                    ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || (Settings.UserId == ((Event)eventCell.BindingContext).CreatorId)))
+                    ((Settings.AccessRole == (int)Settings.ApplicationRole.Admin) || ((eventCell.BindingContext != null) && (Settings.UserId == ((Event)eventCell.BindingContext).CreatorId))))
                 {
                     var menu = new MenuItem()
                     {
