@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace RaceDay.View
 {
@@ -21,6 +22,7 @@ namespace RaceDay.View
         public AddEvent(Event selectedEvent, EventsViewModel evm)
         {
             InitializeComponent();
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
             txtDate.MinimumDate = DateTime.Now.Date;
 

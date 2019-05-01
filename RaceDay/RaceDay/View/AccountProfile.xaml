@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
+             x:Class="RaceDay.View.AccountProfile"
+             Title="Account Profile">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="10, 20, 10, 10" />
+    </ContentPage.Padding>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="plainButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#666" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+            <Style x:Key="okButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#03A9F4" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid x:Name="profileGrid" RowSpacing="2" ColumnSpacing="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ScrollView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <StackLayout Padding="10">
+                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,20" FontSize="Medium" Text="Update your account profile." Style="{StaticResource FontColor}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy,Mode=OneWay}" IsVisible="{Binding IsBusy}" />
+
+                    <Label Text="First Name" Style="{StaticResource label}" />
+                    <Entry x:Name="FirstNameEntry" HorizontalOptions="Fill" Placeholder="First name" Style="{StaticResource EntryStyle}" Text="{Binding FirstName.Value}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateFirstNameCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding FirstName.IsValid}" Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+
+                    <Label Text="Last Name" Style="{StaticResource label}" />
+                    <Entry x:Name="LastNameEntry" HorizontalOptions="Fill" Placeholder="Last name" Style="{StaticResource EntryStyle}" Text="{Binding LastName.Value}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateLastNameCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding LastName.IsValid}" Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+
+                    <Label Text="Email" Style="{StaticResource label}" />
+                    <Entry x:Name="EmailEntry" HorizontalOptions="Fill" Placeholder="Email address" Keyboard="Email" Style="{StaticResource EntryStyle}" Text="{Binding Email.Value}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEmailCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+
+                    <Label x:Name="ErrorMessage" HorizontalOptions="CenterAndExpand" Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding ErrorMessage}" IsVisible="{Binding ShowError}" />
+                </StackLayout>
+            </ScrollView>
+            <Button x:Name="CancelButton" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Cancel" Style="{StaticResource plainButton}" />
+            <Button x:Name="UpdateButton" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" Text="Update" Style="{StaticResource okButton}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

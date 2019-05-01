@@ -9,13 +9,13 @@ namespace RaceDay.Helpers
 {
     public class ExpandableEditor : Editor
     {
-        public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
+        public new static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(
              propertyName: "Placeholder",
              returnType: typeof(string),
              declaringType: typeof(string),
              defaultValue: string.Empty);
 
-        public string Placeholder
+        public new string Placeholder
         {
             get { return GetValue(PlaceholderProperty).ToString(); }
             set { SetValue(PlaceholderProperty, value); }

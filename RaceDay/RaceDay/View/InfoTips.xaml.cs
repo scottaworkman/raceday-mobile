@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+
 
 namespace RaceDay.View
 {
@@ -16,6 +18,7 @@ namespace RaceDay.View
         public InfoTips()
         {
             InitializeComponent();
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
         }
 
         protected override void OnAppearing()
@@ -25,7 +28,14 @@ namespace RaceDay.View
 
         private async void BtnNext_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PopModalAsync();
+            try
+            {
+                await Navigation.PopModalAsync();
+            }
+            catch(Exception)
+            {
+                await Navigation.PopAsync();
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace RaceDay.Services
 {
     public class RestClient
     {
-        private Uri baseUrl;
+        private readonly Uri baseUrl;
         private List<KeyValuePair<string, string>> headers;
 
         public HttpStatusCode StatusCode { get; set; }
@@ -34,79 +34,84 @@ namespace RaceDay.Services
 
         public async Task<T> PostApi<T>(string api, object value, HttpStatusCode success) where T : class
         {
-            // Create Http Client
-            var client = HttpWebRequest.Create(new Uri(baseUrl, api));
-            client.Method = "POST";
-            client.ContentType = "application/json";
-
-            // Add any headers
-            //
-            foreach(var header in headers)
-                client.Headers[header.Key] = header.Value;
-
-            // Write Post body to request
-            if (value != null)
+            try
             {
-                var content = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value));
-                Stream dataStream = await client.GetRequestStreamAsync();
-                dataStream.Write(content, 0, content.Length);
-            }
+                // Create Http Client
+                var client = HttpWebRequest.Create(new Uri(baseUrl, api));
+                client.Method = "POST";
+                client.ContentType = "application/json";
 
-            // Obtain Response and parse the return
-            //
-            HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
-            StatusCode = response.StatusCode;
-            if (StatusCode == success)
+                // Add any headers
+                //
+                foreach (var header in headers)
+                    client.Headers[header.Key] = header.Value;
+
+                // Write Post body to request
+                if (value != null)
+                {
+                    var content = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value));
+                    Stream dataStream = await client.GetRequestStreamAsync();
+                    dataStream.Write(content, 0, content.Length);
+                }
+
+                // Obtain Response and parse the return
+                //
+                HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
+                StatusCode = response.StatusCode;
+                if (StatusCode == success)
+                {
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
+                    string responseBody = await reader.ReadToEndAsync();
+
+                    return JsonConvert.DeserializeObject<T>(responseBody);
+                }
+            }
+            catch(WebException ex)
             {
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
-                string responseBody = await reader.ReadToEndAsync();
-
-                return JsonConvert.DeserializeObject<T>(responseBody);
+                var response = ex.Response as HttpWebResponse;
+                StatusCode = response.StatusCode;
             }
-
+            catch(Exception)
+            { }
             return null;
         }
 
         public async Task<T> GetApi<T>(string api) where T : class
         {
-            // Create Http Client
-            var client = HttpWebRequest.Create(new Uri(baseUrl, api));
-            client.Method = "GET";
-            client.ContentType = "application/json";
-
-            // Add any headers
-            //
-            foreach (var header in headers)
-                client.Headers[header.Key] = header.Value;
-
-            // Obtain Response and parse the return
-            //
-            HttpWebResponse response = null;
             try
             {
-                response = await client.GetResponseAsync() as HttpWebResponse;
+                // Create Http Client
+                var client = HttpWebRequest.Create(new Uri(baseUrl, api));
+                client.Method = "GET";
+                client.ContentType = "application/json";
+
+                // Add any headers
+                //
+                foreach (var header in headers)
+                    client.Headers[header.Key] = header.Value;
+
+                // Obtain Response and parse the return
+                //
+                HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
+                StatusCode = response.StatusCode;
+
+                if (StatusCode == HttpStatusCode.OK)
+                {
+                    Stream receiveStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
+                    string responseBody = await reader.ReadToEndAsync();
+
+                    return JsonConvert.DeserializeObject<T>(responseBody);
+                }
+            }
+            catch (WebException ex)
+            {
+                var response = ex.Response as HttpWebResponse;
                 StatusCode = response.StatusCode;
             }
-            catch (WebException e)
-            {
-                if (e.Response == null)
-                    throw e;
-
-                StatusCode = ((HttpWebResponse)e.Response).StatusCode;
-                if (StatusCode != HttpStatusCode.Unauthorized)
-                    throw e;
-            }
-
-            if (StatusCode == HttpStatusCode.OK)
-            {
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(receiveStream, Encoding.UTF8);
-                string responseBody = await reader.ReadToEndAsync();
-
-                return JsonConvert.DeserializeObject<T>(responseBody);
-            }
-
+            catch (Exception)
+            { }
             return null;
         }
 
@@ -144,28 +149,41 @@ namespace RaceDay.Services
         /// 
         public async Task SimpleApi(string api, string method, object value)
         {
-            // Create Http Client
-            var client = HttpWebRequest.Create(new Uri(baseUrl, api));
-            client.Method = method;
-            client.ContentType = "application/json";
+            try { 
+                // Create Http Client
+                var client = HttpWebRequest.Create(new Uri(baseUrl, api));
+                client.Method = method;
+                client.ContentType = "application/json";
 
-            // Add any headers
-            //
-            foreach (var header in headers)
-                client.Headers[header.Key] = header.Value;
+                // Add any headers
+                //
+                foreach (var header in headers)
+                    client.Headers[header.Key] = header.Value;
 
-            // Write body to request, if any
-            if (value != null)
-            {
-                var content = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value));
-                Stream dataStream = await client.GetRequestStreamAsync();
-                dataStream.Write(content, 0, content.Length);
+                // Write body to request, if any
+                if (value != null)
+                {
+                    var content = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value));
+                    Stream dataStream = await client.GetRequestStreamAsync();
+                    dataStream.Write(content, 0, content.Length);
+                }
+                else
+                {
+                    client.ContentLength = 0;
+                }
+
+                // Obtain Response, no return expected
+                //
+                HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
+                StatusCode = response.StatusCode;
             }
-
-            // Obtain Response, no return expected
-            //
-            HttpWebResponse response = await client.GetResponseAsync() as HttpWebResponse;
-            StatusCode = response.StatusCode;
+            catch (WebException ex)
+            {
+                var response = ex.Response as HttpWebResponse;
+                StatusCode = response.StatusCode;
+            }
+            catch (Exception)
+            { }
 
             return;
         }

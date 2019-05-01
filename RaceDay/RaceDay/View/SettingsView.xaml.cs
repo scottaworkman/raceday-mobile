@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+
 
 namespace RaceDay.View
 {
@@ -17,6 +19,7 @@ namespace RaceDay.View
         public SettingsView()
         {
             InitializeComponent();
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
             var vm = new SettingsViewModel
             {
@@ -25,35 +28,63 @@ namespace RaceDay.View
                 UserName = Settings.UserName
             };
             BindingContext = vm;
+
+            // toolbar items
+            //
+            ToolbarItems.Add(new ToolbarItem()
+            {
+                Icon = "ic_profile.png",
+                Text = "Profile",
+                Order = ToolbarItemOrder.Primary,
+                Command = new Command(() =>
+                {
+                    Navigation.PushModalAsync(new AccountProfile());
+                })
+            });
+            ToolbarItems.Add(new ToolbarItem()
+            {
+                Icon = "ic_password.png",
+                Text = "Password",
+                Order = ToolbarItemOrder.Primary,
+                Command = new Command(() =>
+                {
+                    Navigation.PushModalAsync(new AccountPassword());
+                })
+            });
+            ToolbarItems.Add(new ToolbarItem()
+            {
+                Icon = "ic_logout.png",
+                Text = "Logout",
+                Order = ToolbarItemOrder.Primary,
+                Command = new Command(async () =>
+                {
+                    if (await DisplayAlert("Logout", "Do you wish to logoout?", "Yes", "No"))
+                    {
+                        Settings.UserId = string.Empty;
+                        Settings.UserName = "Your Account";
+                        Settings.UserEmail = string.Empty;
+                        Settings.UserPassword = string.Empty;
+
+                        await Navigation.PushAsync(new InfoMain());
+                    }
+                })
+            });
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            LogoutButton.Clicked += LogoutButton_Clicked;
             HelpButton.Clicked += HelpButton_Clicked;
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            LogoutButton.Clicked -= LogoutButton_Clicked;
             HelpButton.Clicked -= HelpButton_Clicked;
 
             var vm = BindingContext as SettingsViewModel;
             Settings.NotifyNewRace = vm.NotifyNewRace;
             Settings.NotifyParticipantJoins = vm.NotifyParticipantJoins;
-        }
-
-        private async void LogoutButton_Clicked(object sender, EventArgs e)
-        {
-            Settings.UserId = string.Empty;
-            Settings.UserName = "Your Account";
-            Settings.UserEmail = string.Empty;
-
-            DependencyService.Get<IFacebook>()?.Logout();
-
-            await Navigation.PushAsync(new InfoMain());
         }
 
         private async void HelpButton_Clicked(object sender, EventArgs e)

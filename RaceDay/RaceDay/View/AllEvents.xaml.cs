@@ -7,6 +7,7 @@ using RaceDay.Model;
 using RaceDay.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using RaceDay.Helpers;
 
 namespace RaceDay.View
@@ -17,6 +18,7 @@ namespace RaceDay.View
         public AllEvents(EventsViewModel vm)
         {
             InitializeComponent();
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
             BindingContext = vm;
 

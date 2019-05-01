@@ -22,13 +22,13 @@ namespace RaceDay
         {
             InitializeComponent();
 
-            if (string.IsNullOrEmpty(Settings.UserId))
+            if (Settings.IsAuthenticated)
             {
-                MainPage = new NavigationPage(new InfoMain());
+                MainPage = new NavigationPage(new EventTabs());
             }
             else
             {
-                MainPage = new NavigationPage(new EventTabs());
+                MainPage = new NavigationPage(new InfoMain());
             }
         }
 

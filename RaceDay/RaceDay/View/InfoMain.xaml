@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:RaceDay.Helpers;assembly:RaceDay"
+             xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
              x:Class="RaceDay.View.InfoMain">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
@@ -10,23 +10,45 @@
     <ContentPage.Content>
         <Grid x:Name="loginGrid" RowSpacing="2" ColumnSpacing="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ScrollView Grid.Row="0" Grid.Column="0">
+            <StackLayout Padding="10">
+                <Image Source="Logo.png" HorizontalOptions="Center" Margin="0,20,0,20" />
+            </StackLayout>
+            <ScrollView Grid.Row="1" Grid.Column="0">
                 <StackLayout Padding="10">
-                    <Image Source="Logo.png" HorizontalOptions="Center" Margin="0,20,0,20" />
-                    <Label FontSize="Large" HorizontalOptions="Center" Text="Jordan YMCA MultFit" FontAttributes="Bold" Style="{StaticResource FontColor}" />
-                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,40" FontSize="Medium" Text="Thank you for using the JYMF RaceDay mobile app.  Use of the app requires your Facebook login for your identification and to verify that you are a member of the JYMF Facebook group." Style="{StaticResource FontColor}" />
-                    <Label HorizontalTextAlignment="Center" FontSize="Medium"  Text="Click the login button below to authorize this app to use your Facebook login." Style="{StaticResource FontColor}" />
-                    <Label HorizontalTextAlignment="Center" FontSize="Large" Margin="0,20,0,0" FontAttributes="Bold" Text="Checking Facebook Group Access" Style="{StaticResource FontColor}" x:Name="FacebookAccess" IsVisible="False" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,0" FontSize="Medium" Text="Enter your JYMF RaceDay credentials below." Style="{StaticResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,0,0,20" FontSize="Small" Text="Use Forgot Password if no password set or you need it reset." Style="{StaticResource FontColor}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy,Mode=OneWay}" IsVisible="{Binding IsBusy}" />
+                    <Label Text="Email" Style="{StaticResource label}" />
+                    <Entry x:Name="EmailEntry" HorizontalOptions="Fill" Placeholder="Email address" Keyboard="Email" Style="{StaticResource EntryStyle}" Text="{Binding Email.Value}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEmailCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label Text="Password" Style="{StaticResource label}" />
+                    <Entry x:Name="PasswordEntry" HorizontalOptions="Fill" Placeholder="Password" IsPassword="True" Style="{StaticResource EntryStyle}" Text="{Binding Password.Value}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                        </Entry.Behaviors>
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding Password.IsValid}" Value="False">
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                    <Label x:Name="ErrorMessage" HorizontalOptions="CenterAndExpand" Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding ErrorMessage}" IsVisible="{Binding ShowError}" />
+                    <Button x:Name="LoginButton" HorizontalOptions="Center" Text="Login" Style="{StaticResource LoginButton}" />
+                    <Label Text="Forgot Password" x:Name="ForgotLabel" TextColor="#03A9F4" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <Label Text="Register Account" x:Name="RegisterLabel" TextColor="#03A9F4" FontSize="Medium" HorizontalOptions="Center" />
                 </StackLayout>
             </ScrollView>
-            <controls:FacebookLoginButton x:Name="loginButton"  HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Margin="10,10,10,10" OnFacebookLogin="Facebook_Login" OnFacebookError="Facebook_Error">
-                <controls:FacebookLoginButton.HeightRequest>
-                    <OnPlatform x:TypeArguments="x:Double" iOS="36" Android="-1" />
-                </controls:FacebookLoginButton.HeightRequest>
-            </controls:FacebookLoginButton>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

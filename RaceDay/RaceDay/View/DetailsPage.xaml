@@ -40,7 +40,9 @@
                                     </StackLayout.BackgroundColor>
 
                                     <StackLayout Orientation="Horizontal">
-                                        <Image Source="{Binding ImageUrl}" Margin="0, 5, 10, 5" HeightRequest="50" WidthRequest="50" />
+                                        <Frame HasShadow="False" CornerRadius="25" HeightRequest="50" WidthRequest="50" BackgroundColor="{Binding Color}" OutlineColor="{Binding Color}" HorizontalOptions="Start" VerticalOptions="Center" Margin="0, 5, 10, 5" Padding="0">
+                                            <Label Text="{Binding Initials}" BackgroundColor="{Binding Color}" FontSize="18" TextColor="White" Margin="0" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                        </Frame>
                                         <Label Text="{Binding Name}" FontSize="Default" VerticalOptions="Center" Style="{StaticResource MediumLabel}" />
                                     </StackLayout>
 

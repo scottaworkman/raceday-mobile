@@ -48,7 +48,7 @@ namespace RaceDay.iOS
             //
             ApplicationDelegate.SharedInstance.FinishedLaunching(app, options);
             Profile.EnableUpdatesOnAccessTokenChange(true);
-            Settings.AppID = NSBundle.MainBundle.ObjectForInfoDictionary("FacebookAppID").ToString();
+            Settings.AppId = NSBundle.MainBundle.ObjectForInfoDictionary("FacebookAppID").ToString();
             Settings.DisplayName = NSBundle.MainBundle.ObjectForInfoDictionary("FacebookDisplayName").ToString();
 
             return base.FinishedLaunching(app, options);

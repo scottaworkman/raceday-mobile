@@ -164,15 +164,30 @@ namespace RaceDay.ViewModel
         {
             await ExecuteCommand(async () =>
             {
-                var items = await RaceDayClient.GetEvents();
+                var items = await RaceDayV2Client.GetAllEventsForCurrentUser();
 
                 Events.Clear();
                 MyEvents.Clear();
                 foreach (var item in items)
                 {
-                    Events.Add(item);
-                    if (item.Attending)
-                        MyEvents.Add(item);
+                    var racedayEvent = new Event
+                    {
+                        EventId = item.EventId,
+                        GroupId = item.GroupId,
+                        Name = item.Name,
+                        Date = item.Date,
+                        Url = item.Url,
+                        Location = item.Location,
+                        Description = item.Description,
+                        CreatorId = item.CreatorId,
+                        UserId = item.UserId,
+                        Attending = (item.Attending != 0),
+                        AttendanceCount = item.AttendanceCount
+                    };
+
+                    Events.Add(racedayEvent);
+                    if (racedayEvent.Attending)
+                        MyEvents.Add(racedayEvent);
                 }
                 return;
             }, true);
@@ -200,15 +215,26 @@ namespace RaceDay.ViewModel
         {
             await ExecuteCommand(async () =>
             {
-                var result = await RaceDayClient.Attending(EventInfo.EventId, EventInfo.Attending);
-                if (result == false)
-                    EventInfo.Attending = !EventInfo.Attending;
+                if (EventInfo.Attending)
+                {
+                    if (await RaceDayV2Client.AddUserToEvent(EventInfo.EventId) == true)
+                    {
+                        EventInfo.AttendanceCount++;
+                    }
+                }
                 else
                 {
-                    OnPropertyChanged(nameof(EventInfo));
-                    UpdateEvent();
-                    await UpdateParticipantsList();
+                    await RaceDayV2Client.RemoveUserFromEvent(EventInfo.EventId);
+                    if (EventInfo.AttendanceCount > 0 )
+                    {
+                        EventInfo.AttendanceCount--;
+                    }
                 }
+
+                OnPropertyChanged(nameof(EventInfo));
+                UpdateEvent();
+                await UpdateParticipantsList();
+
                 return;
             });
         }
@@ -222,11 +248,31 @@ namespace RaceDay.ViewModel
         {
             await ExecuteCommand(async () =>
             {
-                var newEvent = await RaceDayClient.AddEvent(EventInfo);
+                var newEvent = await RaceDayV2Client.AddEvent(
+                                            EventInfo.Name,
+                                            EventInfo.Date,
+                                            EventInfo.Url,
+                                            EventInfo.Location,
+                                            EventInfo.Description,
+                                            EventInfo.CreatorId);
 
                 OnPropertyChanged(nameof(EventInfo));
-                Events.AddEvent(newEvent.eventinfo);
-                MyEvents.AddEvent(newEvent.eventinfo);
+
+                var addEvent = new Event
+                {
+                    EventId = newEvent.eventinfo.EventId,
+                    Name = newEvent.eventinfo.Name,
+                    Date = newEvent.eventinfo.Date,
+                    Url = newEvent.eventinfo.Url,
+                    Location = newEvent.eventinfo.Location,
+                    Description = newEvent.eventinfo.Description,
+                    CreatorId = newEvent.eventinfo.CreatorId,
+                    AttendanceCount = 1,
+                    Attending = true
+                };
+
+                Events.AddEvent(addEvent);
+                MyEvents.AddEvent(addEvent);
 
                 Analytics.TrackEvent("Event Added",
                     new Dictionary<string, string> {
@@ -257,7 +303,7 @@ namespace RaceDay.ViewModel
                 if (answer == false)
                     return;
 
-                if (await RaceDayClient.DeleteEvent(EventInfo.EventId) == false)
+                if (await RaceDayV2Client.DeleteEvent(EventInfo.EventId) == false)
                 {
                     await page.DisplayAlert("Application Error", "Unable to delete event", "Ok");
                     return;
@@ -279,7 +325,7 @@ namespace RaceDay.ViewModel
         {
             await ExecuteCommand(async () =>
             {
-                if (await RaceDayClient.DeleteEvent(eventId) == false)
+                if (await RaceDayV2Client.DeleteEvent(eventId) == false)
                 {
                     await App.Current.MainPage.DisplayAlert("Application Error", "Unable to delete event", "Ok");
                     return;
@@ -303,7 +349,16 @@ namespace RaceDay.ViewModel
         {
             await ExecuteCommand(async () =>
             {
-                if (await RaceDayClient.UpdateEvent(EventInfo) == false)
+
+
+                if (await RaceDayV2Client.UpdateEvent(
+                                            EventInfo.EventId,
+                                            EventInfo.Name,
+                                            EventInfo.Date,
+                                            EventInfo.Url,
+                                            EventInfo.Location,
+                                            EventInfo.Description,
+                                            EventInfo.CreatorId) == false)
                 {
                     await page.DisplayAlert("Application Error", "Unable to update the event information", "Ok");
                     return;
@@ -331,12 +386,21 @@ namespace RaceDay.ViewModel
         /// 
         async Task UpdateParticipantsList()
         {
-            var racers = await RaceDayClient.GetEventParticipants(EventInfo.EventId);
+            var eventDetail = await RaceDayV2Client.GetEventDetail(EventInfo.EventId);
 
             Participants.Clear();
-            foreach (var racer in racers)
+            foreach (var attendee in eventDetail.attendees)
             {
-                racer.ImageUrl = String.Format("https://graph.facebook.com/{0}/picture?type=square", racer.UserId);
+                var racer = new Participant
+                {
+                    FirstName = attendee.FirstName,
+                    LastName = attendee.LastName,
+                    Name = attendee.Name,
+                    EMail = attendee.Email,
+                    UserId = attendee.UserId,
+                    Initials = attendee.FirstName.Left(1).ToUpper() + attendee.LastName.Left(1).ToUpper(),
+                    Color = attendee.Name.ToColor(),
+                };
                 Participants.Add(racer);
             }
         }

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
+             x:Class="RaceDay.View.RegisterAccount"
+             Title="Register Account">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="10, 20, 10, 10" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label HorizontalTextAlignment="Center" Margin="0,20,0,0" FontSize="Medium" Text="Register for a RaceDay account below." Style="{StaticResource FontColor}" />
+                <Label HorizontalTextAlignment="Center" Margin="0,0,0,20" FontSize="Small" Text="Accounts subject to review." Style="{StaticResource FontColor}" />
+                <ActivityIndicator IsRunning="{Binding IsBusy,Mode=OneWay}" IsVisible="{Binding IsBusy}" />
+
+                <Label Text="First Name" Style="{StaticResource label}" />
+                <Entry x:Name="FirstNameEntry" HorizontalOptions="Fill" Placeholder="First name" Style="{StaticResource EntryStyle}" Text="{Binding FirstName.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateFirstNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding FirstName.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label Text="Last Name" Style="{StaticResource label}" />
+                <Entry x:Name="LastNameEntry" HorizontalOptions="Fill" Placeholder="Last name" Style="{StaticResource EntryStyle}" Text="{Binding LastName.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateLastNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding LastName.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label Text="Email" Style="{StaticResource label}" />
+                <Entry x:Name="EmailEntry" HorizontalOptions="Fill" Placeholder="Email address" Keyboard="Email" Style="{StaticResource EntryStyle}" Text="{Binding Email.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEmailCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label Text="Password" Style="{StaticResource label}" />
+                <Entry x:Name="PasswordEntry" HorizontalOptions="Fill" Placeholder="Password" IsPassword="True" Style="{StaticResource EntryStyle}" Text="{Binding Password.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Password.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label Text="Confirm Password" Style="{StaticResource label}" />
+                <Entry x:Name="ConfirmPasswordEntry" HorizontalOptions="Fill" Placeholder="Confirm Password" IsPassword="True" Style="{StaticResource EntryStyle}" Text="{Binding ConfirmPassword.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateConfirmPasswordCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding ConfirmPassword.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label Text="Group Code" Style="{StaticResource label}" />
+                <Entry x:Name="GroupCodeEntry" HorizontalOptions="Fill" Placeholder="Group Code" Style="{StaticResource EntryStyle}" Text="{Binding GroupCode.Value}">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateGroupCodeCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding GroupCode.IsValid}" Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+
+                <Label x:Name="ErrorMessage" HorizontalOptions="CenterAndExpand" Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding ErrorMessage}" IsVisible="{Binding ShowError}" />
+                
+                <Button x:Name="RegisterButton" HorizontalOptions="Center" Text="Register Account" Style="{StaticResource LoginButton}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

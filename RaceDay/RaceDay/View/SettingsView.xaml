@@ -10,7 +10,9 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout HorizontalOptions="FillAndExpand" Padding="20">
-                <Label FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,0,0,20" TextColor="#03A9F4">Notifications</Label>
+                <Label FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,0,0,0" TextColor="#03A9F4" Text="{Binding UserName}" />
+                <Label HorizontalOptions="StartAndExpand" Margin="0,10,0,20" Text="Use icons to manage profile, password, or logout" />
+                <Label FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,5,0,20" TextColor="#03A9F4">Notifications</Label>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,0,0,15">
                     <Label HorizontalOptions="Start" Style="{StaticResource SmallLabel}">New race added</Label>
                     <Label HorizontalOptions="StartAndExpand" TextColor="#FF9800" Style="{StaticResource SmallLabel}"> (future)</Label>
@@ -20,11 +22,6 @@
                     <Label HorizontalOptions="Start" Style="{StaticResource SmallLabel}">Racer joins one of my races</Label>
                     <Label HorizontalOptions="StartAndExpand" TextColor="#FF9800" Style="{StaticResource SmallLabel}"> (future)</Label>
                     <Switch x:Name="SwitchNotifyParticipantJoins" HorizontalOptions="End" IsToggled="{Binding NotifyParticipantJoins}" />
-                </StackLayout>
-                <Label FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,5,0,20" TextColor="#03A9F4">Account</Label>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,0,0,15">
-                    <Label HorizontalOptions="StartAndExpand" Margin="0,10,0,0" Text="{Binding UserName}" />
-                    <Button HorizontalOptions="End" x:Name="LogoutButton" Text="Logout" WidthRequest="100" BackgroundColor="#03A9F4" TextColor="White" />
                 </StackLayout>
                 <Label FontSize="Medium" HorizontalOptions="StartAndExpand" Margin="0,5,0,20" TextColor="#03A9F4">App Help</Label>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,0,0,15">

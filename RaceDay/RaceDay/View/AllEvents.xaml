@@ -23,7 +23,7 @@
                                             <Label Text="{Binding Name}" Margin="0" Style="{StaticResource SmallLabel}" />
                                         </StackLayout>
                                         <Image Source="ic_star_orange" IsVisible="{Binding Attending}" HorizontalOptions="End" />
-                                        <Frame CornerRadius="11" HeightRequest="22" WidthRequest="22" BackgroundColor="#999999" OutlineColor="#999999" HorizontalOptions="Start" VerticalOptions="Center" Margin="0" Padding="0">
+                                        <Frame HasShadow="False" CornerRadius="11" HeightRequest="22" WidthRequest="22" BackgroundColor="#999999" OutlineColor="#999999" HorizontalOptions="Start" VerticalOptions="Center" Margin="0" Padding="0">
                                             <Label Text="{Binding AttendanceCount}" BackgroundColor="#999999" TextColor="White" Margin="0" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                                         </Frame>
                                     </StackLayout>

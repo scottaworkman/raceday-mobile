@@ -33,11 +33,11 @@ namespace RaceDay.Helpers
 
         // User information obtained from Facebook
         //
+        private const string ApiUrlKey = "apiurl_key";
+
         private const string GroupNameKey = "groupname_key";
 
         private const string GroupCodeKey = "groupcode_key";
-
-        private const string GroupFacebookIdKey = "groupfacebookid_key";
 
         private const string GroupApiKey = "groupapi_key";
 
@@ -51,7 +51,7 @@ namespace RaceDay.Helpers
 
         private const string UserEmailKey = "useremail_key";
 
-        private const string FacebookAppIdKey = "facebookappid_key";
+        private const string UserPasswordKey = "userpassword_key";
 
         // Access Token authorizing REST client to the server API
         //
@@ -77,6 +77,14 @@ namespace RaceDay.Helpers
 
         #endregion
 
+        public static string APIUrl
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ApiUrlKey, SettingsDefaults.ApiUrlDefault);
+            }
+        }
+
         public static string GroupName
         {
             get
@@ -98,18 +106,6 @@ namespace RaceDay.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(GroupCodeKey, value);
-            }
-        }
-
-        public static string GroupFacebookId
-        {
-            get
-            {
-                return AppSettings.GetValueOrDefault(GroupFacebookIdKey, SettingsDefaults.GroupFacebookIdDefault);
-            }
-            set
-            {
-                AppSettings.AddOrUpdateValue(GroupFacebookIdKey, value);
             }
         }
 
@@ -185,15 +181,15 @@ namespace RaceDay.Helpers
             }
         }
 
-        public static string FacebookAppId
+        public static string UserPassword
         {
             get
             {
-                return AppSettings.GetValueOrDefault(FacebookAppIdKey, SettingsDefaults.FacebookAppIdDefault);
+                return AppSettings.GetValueOrDefault(UserPasswordKey, String.Empty);
             }
             set
             {
-                AppSettings.AddOrUpdateValue(FacebookAppIdKey, value);
+                AppSettings.AddOrUpdateValue(UserPasswordKey, value);
             }
         }
 
@@ -230,6 +226,14 @@ namespace RaceDay.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(AccessRoleKey, value);
+            }
+        }
+
+        public static Boolean IsAuthenticated
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(UserEmail) && !string.IsNullOrEmpty(UserPassword);
             }
         }
 
@@ -280,7 +284,6 @@ namespace RaceDay.Helpers
                     Token = AccessToken,
                     Expiration = AccessExpiration,
                     Role = AccessRole,
-                    Name = UserName
                 };
 
                 if (string.IsNullOrEmpty(token.Token) || (token.Expiration < DateTime.Now))
@@ -295,7 +298,6 @@ namespace RaceDay.Helpers
                     AccessToken = value.Token;
                     AccessExpiration = value.Expiration;
                     AccessRole = value.Role;
-                    UserName = value.Name;
                 }
             }
         }

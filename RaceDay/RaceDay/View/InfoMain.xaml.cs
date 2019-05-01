@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+using RaceDay.ViewModel;
 
 namespace RaceDay.View
 {
@@ -20,7 +22,26 @@ namespace RaceDay.View
         public InfoMain()
         {
             InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
+            Xamarin.Forms.NavigationPage.SetHasNavigationBar(this, false);
+
+            var vm = new LoginViewModel();
+            BindingContext = vm;
+
+            ForgotLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    Navigation.PushAsync(new ForgotPassword());
+                })
+            });
+            RegisterLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    Navigation.PushAsync(new RegisterAccount());
+                })
+            });
         }
 
         protected override void OnAppearing()
@@ -31,52 +52,60 @@ namespace RaceDay.View
                 ResetNavigationStack();
                 isStartup = false;
             }
+
+            LoginButton.Clicked += LoginButton_Clicked;
         }
 
-        protected async void Facebook_Login(object sender, FacebookLoginHandlerArgs args)
+        private async void LoginButton_Clicked(object sender, EventArgs e)
         {
-            loginButton.IsVisible = false;
-            FacebookAccess.IsVisible = true;
-
-            // Use Facebook graph api to get user information just logged in and make sure they are a member of the group
-            //
-            FacebookClient fb = new FacebookClient(args.AccessToken);
-            await fb.GetUserProfile();
-            if (string.IsNullOrEmpty(fb.Id))
+            LoginViewModel vm = BindingContext as LoginViewModel;
+            
+            if (vm.Validate() == false)
             {
-                await DisplayAlert("Facebook Error", "Unable to obtain Facebook information", "Ok");
-                loginButton.IsVisible = true;
-                FacebookAccess.IsVisible = false;
-                DependencyService.Get<IFacebook>()?.Logout();
+                if (vm.Email.IsValid == false)
+                    EmailEntry.Focus();
+                else if (vm.Password.IsValid == false)
+                    PasswordEntry.Focus();
+
                 return;
             }
 
-            // Store the User Id for future use and move on to the main page
+            // Attempt  to login using the API
             //
-            Settings.UserId = fb.Id;
-            Settings.UserName = fb.Name;
-            Settings.UserFirstName = fb.FirstName;
-            Settings.UserLastName = fb.LastName;
-            Settings.UserEmail = fb.Email;
+            vm.IsBusy = true;
+            var login = await RaceDayV2Client.Login(vm.Email.Value.Trim(), vm.Password.Value.Trim());
+            if (login != null)
+            {
+                Settings.UserId = login.userid;
+                Settings.UserEmail = login.email;
+                Settings.UserPassword = vm.Password.Value.Trim();
+                Settings.UserFirstName = login.firstname;
+                Settings.UserLastName = login.lastname;
+                Settings.UserName = login.name;
 
-            // Make sure this user is in the server API
-            //
-            await RaceDayClient.AddUser(fb.Id, fb.Name, fb.FirstName, fb.LastName, fb.Email);
+                Settings.Token = new Model.AccessToken
+                {
+                    Token = login.token,
+                    Expiration = login.expiration,
+                    Role = login.role
+                };
 
-            // Login Custom Event
-            //
-            Analytics.TrackEvent("Login",
-                    new Dictionary<string, string> {
-                            { "UID", Settings.UserId } }
-                    );
+                Analytics.TrackEvent("Login",
+                    new Dictionary<string, string>
+                    {
+                    { "UID", Settings.UserId },
+                    { "Email", Settings.UserEmail }
+                    });
 
-            await Navigation.PushAsync(new EventTabs(), false);
-        }
-
-        protected async void Facebook_Error(object sender, FacebookLoginHandlerArgs args)
-        {
-            await DisplayAlert("Facebook Login Error", args.ErrorMessage, "OK");
-            return;
+                await Navigation.PushAsync(new EventTabs(), false);
+            }
+            else
+            {
+                vm.ErrorMessage = "Unable to login with email/password";
+                vm.Email.IsValid = false;
+                vm.Password.IsValid = false;
+            }
+            vm.IsBusy = false;
         }
 
         private void ResetNavigationStack()

@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
+             xmlns:converters="clr-namespace:RaceDay.Converters"
              x:Class="RaceDay.App">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
         <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+            <converters:BooleanInverseConverter x:Key="BooleanInverseConverter" />
             <Color x:Key="BlackColor">#000000</Color>
             <Color x:Key="SilverColor">#cccccc</Color>
             <Color x:Key="ErrorColor">#ff5252</Color>
@@ -50,6 +54,40 @@
                         <OnPlatform x:TypeArguments="x:Double" iOS="20" />
                     </Setter.Value>
                 </Setter>
+            </Style>
+            <Style x:Key="LoginButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#03A9F4" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="0,20,0,20" />
+                <Setter Property="Padding" Value="60,10,60,10" />
+            </Style>
+            <Style x:Key="label" TargetType="Label">
+                <Setter Property="TextColor">
+                    <OnPlatform x:TypeArguments="Color" iOS="#212121" Android="#999" />
+                </Setter>
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+            </Style>
+            <Style x:Key="field" TargetType="Entry">
+                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor" Value="True" />
+                <Setter Property="behaviors:LineColorBehavior.LineColor">
+                    <OnPlatform x:TypeArguments="Color" iOS="{StaticResource SilverColor}" Android="{StaticResource BlackColor}" />
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <OnPlatform x:TypeArguments="x:Double" iOS="30" Android="40" />
+                </Setter>
+            </Style>
+            <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+                <Setter Property="FontSize" Value="16" />
             </Style>
         </ResourceDictionary>
 
