@@ -106,6 +106,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="appcenter-post-clone.sh" />
+    <ProguardConfiguration Include="Proguard.cfg" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
