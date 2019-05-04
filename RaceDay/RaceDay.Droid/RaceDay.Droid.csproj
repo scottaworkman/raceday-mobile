@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effects\EntryLineColorEffect.cs" />
+    <Compile Include="Effects\RoundCornersEffect.cs" />
     <Compile Include="Helpers\CookieReset.cs" />
     <Compile Include="Helpers\FloatingActionButtonViewRenderer.cs" />
     <Compile Include="Helpers\ExpandableEditorRenderer.cs" />

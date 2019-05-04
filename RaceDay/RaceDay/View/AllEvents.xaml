@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effects="clr-namespace:RaceDay.Effects;assembly=RaceDay"
              x:Class="RaceDay.View.AllEvents">
     <ContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color" iOS="#bdbdbd" />
@@ -23,9 +24,7 @@
                                             <Label Text="{Binding Name}" Margin="0" Style="{StaticResource SmallLabel}" />
                                         </StackLayout>
                                         <Image Source="ic_star_orange" IsVisible="{Binding Attending}" HorizontalOptions="End" />
-                                        <Frame HasShadow="False" CornerRadius="11" HeightRequest="22" WidthRequest="22" BackgroundColor="#999999" OutlineColor="#999999" HorizontalOptions="Start" VerticalOptions="Center" Margin="0" Padding="0">
-                                            <Label Text="{Binding AttendanceCount}" BackgroundColor="#999999" TextColor="White" Margin="0" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                                        </Frame>
+                                        <Label Text="{Binding AttendanceCount}" BackgroundColor="#999999" TextColor="White" HeightRequest="22" WidthRequest="22" effects:RoundCornersEffect.CornerRadius="11" Margin="0" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                                     </StackLayout>
                                     
                                 </StackLayout>

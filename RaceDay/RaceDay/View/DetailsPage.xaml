@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:RaceDay.Converters;assembly=RaceDay"
+             xmlns:effects="clr-namespace:RaceDay.Effects;assembly=RaceDay"
              x:Class="RaceDay.View.DetailsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -40,9 +41,7 @@
                                     </StackLayout.BackgroundColor>
 
                                     <StackLayout Orientation="Horizontal">
-                                        <Frame HasShadow="False" CornerRadius="25" HeightRequest="50" WidthRequest="50" BackgroundColor="{Binding Color}" OutlineColor="{Binding Color}" HorizontalOptions="Start" VerticalOptions="Center" Margin="0, 5, 10, 5" Padding="0">
-                                            <Label Text="{Binding Initials}" BackgroundColor="{Binding Color}" FontSize="18" TextColor="White" Margin="0" HorizontalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                                        </Frame>
+                                        <Label Text="{Binding Initials}" BackgroundColor="{Binding Color}" FontSize="18" TextColor="White" Margin="0,5,10,5" HeightRequest="40" WidthRequest="40" effects:RoundCornersEffect.CornerRadius="20" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
                                         <Label Text="{Binding Name}" FontSize="Default" VerticalOptions="Center" Style="{StaticResource MediumLabel}" />
                                     </StackLayout>
 
