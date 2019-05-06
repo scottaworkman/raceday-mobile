@@ -38,12 +38,18 @@ namespace RaceDay.View
         private async void PasswordButton_Clicked(object sender, EventArgs e)
         {
             var vm = BindingContext as PasswordViewModel;
-            
+
             if (vm.Validate() == false)
             {
                 if (vm.Email.IsValid == false)
                     EmailEntry.Focus();
 
+                return;
+            }
+
+            if (CrossConnectivity.Current.IsConnected == false)
+            {
+                vm.ErrorMessage = "No connection";
                 return;
             }
 

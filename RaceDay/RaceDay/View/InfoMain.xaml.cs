@@ -59,7 +59,7 @@ namespace RaceDay.View
         private async void LoginButton_Clicked(object sender, EventArgs e)
         {
             LoginViewModel vm = BindingContext as LoginViewModel;
-            
+
             if (vm.Validate() == false)
             {
                 if (vm.Email.IsValid == false)
@@ -67,6 +67,12 @@ namespace RaceDay.View
                 else if (vm.Password.IsValid == false)
                     PasswordEntry.Focus();
 
+                return;
+            }
+
+            if (CrossConnectivity.Current.IsConnected == false)
+            {
+                vm.ErrorMessage = "No connection";
                 return;
             }
 

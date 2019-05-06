@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+using Plugin.Connectivity;
 
 namespace RaceDay.View
 {
@@ -86,6 +87,13 @@ namespace RaceDay.View
                 else if (vm.EventUrl.IsValid == false)
                     txtUrl.Focus();
 
+                return;
+            }
+
+            if (CrossConnectivity.Current.IsConnected == false)
+            {
+                vm.IsValid = false;
+                DisplayAlert("No Connection", "Connection is required to add new event", "OK");
                 return;
             }
 

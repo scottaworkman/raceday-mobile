@@ -38,7 +38,7 @@ namespace RaceDay.View
         private void RegisterButton_Clicked(object sender, EventArgs e)
         {
             var vm = BindingContext as RegisterViewModel;
-            
+
             if (vm.Validate() == false)
             {
                 if (vm.FirstName.IsValid == false)
@@ -54,6 +54,12 @@ namespace RaceDay.View
                 else if (vm.GroupCode.IsValid == false)
                     GroupCodeEntry.Focus();
 
+                return;
+            }
+
+            if (CrossConnectivity.Current.IsConnected == false)
+            {
+                vm.ErrorMessage = "No connection";
                 return;
             }
 

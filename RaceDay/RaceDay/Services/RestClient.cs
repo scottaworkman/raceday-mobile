@@ -70,7 +70,14 @@ namespace RaceDay.Services
             catch(WebException ex)
             {
                 var response = ex.Response as HttpWebResponse;
-                StatusCode = response.StatusCode;
+                if (response != null)
+                {
+                    StatusCode = response.StatusCode;
+                }
+                else
+                {
+                    StatusCode = HttpStatusCode.GatewayTimeout;
+                }
             }
             catch(Exception)
             { }
@@ -108,7 +115,14 @@ namespace RaceDay.Services
             catch (WebException ex)
             {
                 var response = ex.Response as HttpWebResponse;
-                StatusCode = response.StatusCode;
+                if (response != null)
+                {
+                    StatusCode = response.StatusCode;
+                }
+                else
+                {
+                    StatusCode = HttpStatusCode.GatewayTimeout;
+                }
             }
             catch (Exception)
             { }
@@ -180,7 +194,14 @@ namespace RaceDay.Services
             catch (WebException ex)
             {
                 var response = ex.Response as HttpWebResponse;
-                StatusCode = response.StatusCode;
+                if (response != null)
+                {
+                    StatusCode = response.StatusCode;
+                }
+                else
+                {
+                    StatusCode = HttpStatusCode.GatewayTimeout;
+                }
             }
             catch (Exception)
             { }
