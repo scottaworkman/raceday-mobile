@@ -4,10 +4,6 @@
              xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
              x:Class="RaceDay.View.AccountProfile"
              Title="Account Profile">
-    <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness"
-                iOS="10, 20, 10, 10" Android="10, 0, 10, 10" />
-    </ContentPage.Padding>
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="plainButton" TargetType="Button">
@@ -24,8 +20,15 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+                iOS="10, 20, 10, 10" Android="10, 0, 10, 10" />
+    </ContentPage.Padding>
     <ContentPage.Content>
         <Grid x:Name="profileGrid" RowSpacing="2" ColumnSpacing="2">
+            <Grid.Padding>
+                <OnPlatform x:TypeArguments="Thickness" iOS="10,20,10,10" />
+            </Grid.Padding>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
