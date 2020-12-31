@@ -22,6 +22,10 @@ namespace RaceDay
         {
             InitializeComponent();
 
+            Application.Current.UserAppTheme = Settings.AppTheme;
+
+            Application.Current.RequestedThemeChanged += Current_RequestedThemeChanged;
+
             if (Settings.IsAuthenticated)
             {
                 MainPage = new NavigationPage(new EventTabs());
@@ -29,6 +33,36 @@ namespace RaceDay
             else
             {
                 MainPage = new NavigationPage(new InfoMain());
+            }
+            Current_RequestedThemeChanged(this, new AppThemeChangedEventArgs(App.Current.UserAppTheme));
+        }
+
+        private void Current_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+        {
+            if (Application.Current.UserAppTheme == OSAppTheme.Unspecified)
+            {
+                if (Settings.AppTheme == OSAppTheme.Unspecified)
+                {
+                    Application.Current.UserAppTheme = e.RequestedTheme;
+                }
+            }
+
+            if (Application.Current.UserAppTheme == OSAppTheme.Light ||
+                ((Application.Current.UserAppTheme == OSAppTheme.Unspecified) && (Application.Current.RequestedTheme == OSAppTheme.Light)))
+            {
+                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromRgb(255, 152, 0);
+                ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
+
+                var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
+                statusbar?.SetStatusBarColor(Color.FromHex("#F57C00"));
+            }
+            else
+            {
+                ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromRgb(17, 23, 31);
+                ((NavigationPage)Application.Current.MainPage).BarTextColor = Color.White;
+
+                var statusbar = DependencyService.Get<IStatusBarPlatformSpecific>();
+                statusbar?.SetStatusBarColor(Color.FromRgb(12, 15, 21));
             }
         }
 

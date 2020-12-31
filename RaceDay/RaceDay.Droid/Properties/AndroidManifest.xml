@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.workmanfamily.jymfraceday" android:versionCode="26" android:versionName="2.0.26">
-	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="28" />
-	<application android:label="JYMF RaceDay"></application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.workmanfamily.jymfraceday" android:versionCode="27" android:versionName="2.0.27">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
+	<application android:label="JYMF RaceDay" android:icon="@drawable/icon"></application>
 </manifest>

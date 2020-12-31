@@ -2,16 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RaceDay.View.InfoTips"
-             Title="Application Help">
+             Title="Application Help"
+             Style="{DynamicResource PageStyle}">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
                 iOS="10, 20, 10, 10" Android="10, 0, 10, 10" />
     </ContentPage.Padding>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="nextButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#03A9F4" />
-                <Setter Property="TextColor" Value="White" />
+            <Style x:Key="nextButton" TargetType="Button" BasedOn="{StaticResource DefaultButton}">
                 <Setter Property="BorderRadius" Value="0" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="HeightRequest" Value="60" />

@@ -25,7 +25,10 @@ namespace RaceDay.View
             {
                 NotifyNewRace = Settings.NotifyNewRace,
                 NotifyParticipantJoins = Settings.NotifyParticipantJoins,
-                UserName = Settings.UserName
+                UserName = Settings.UserName,
+                ThemeLight = Settings.AppTheme == OSAppTheme.Light,
+                ThemeDark = Settings.AppTheme == OSAppTheme.Dark,
+                ThemeSystem = Settings.AppTheme == OSAppTheme.Unspecified
             };
             BindingContext = vm;
 
@@ -33,7 +36,7 @@ namespace RaceDay.View
             //
             ToolbarItems.Add(new ToolbarItem()
             {
-                Icon = "ic_profile.png",
+                IconImageSource = "ic_profile.png",
                 Text = "Profile",
                 Order = ToolbarItemOrder.Primary,
                 Command = new Command(() =>
@@ -43,7 +46,7 @@ namespace RaceDay.View
             });
             ToolbarItems.Add(new ToolbarItem()
             {
-                Icon = "ic_password.png",
+                IconImageSource = "ic_password.png",
                 Text = "Password",
                 Order = ToolbarItemOrder.Primary,
                 Command = new Command(() =>
@@ -53,7 +56,7 @@ namespace RaceDay.View
             });
             ToolbarItems.Add(new ToolbarItem()
             {
-                Icon = "ic_logout.png",
+                IconImageSource = "ic_logout.png",
                 Text = "Logout",
                 Order = ToolbarItemOrder.Primary,
                 Command = new Command(async () =>
@@ -90,6 +93,24 @@ namespace RaceDay.View
         private async void HelpButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new InfoTips());
+        }
+
+        private void AppTheme_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            var vm = BindingContext as SettingsViewModel;
+            if (vm.ThemeLight)
+            {
+                Settings.AppTheme = OSAppTheme.Light;
+            }
+            else if (vm.ThemeDark)
+            {
+                Settings.AppTheme = OSAppTheme.Dark;
+            }
+            else
+            {
+                Settings.AppTheme = OSAppTheme.Unspecified;
+            }
+            Xamarin.Forms.Application.Current.UserAppTheme = Settings.AppTheme;
         }
     }
 }
