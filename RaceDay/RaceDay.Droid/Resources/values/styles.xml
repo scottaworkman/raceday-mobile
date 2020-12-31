@@ -42,7 +42,7 @@
     
   </style>
 
-  <style name="RaceDayTheme.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid">
+  <style name="RaceDayTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
     <!--  remove shadow below action bar  -->
     <!--  <item name="android:elevation">0dp</item>  -->
     <!--  Support library compatibility  -->

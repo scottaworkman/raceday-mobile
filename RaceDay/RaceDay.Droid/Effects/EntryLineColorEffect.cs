@@ -6,6 +6,9 @@ using Android.Widget;
 using RaceDay.Behaviors;
 using System.ComponentModel;
 using System.Diagnostics;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Graphics;
 
 [assembly: ResolutionGroupName("RaceDay")]
 [assembly: ExportEffect(typeof(EntryLineColorEffect), "EntryLineColorEffect")]
@@ -51,12 +54,24 @@ namespace RaceDay.Droid.Effects
             {
                 if (control != null)
                 {
-                    control.Background.SetColorFilter(LineColorBehavior.GetLineColor(Element).ToAndroid(), Android.Graphics.PorterDuff.Mode.SrcAtop);
+                    SetColorFilter(control.Background, LineColorBehavior.GetLineColor(Element).ToAndroid());
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void SetColorFilter(Drawable drawable, Android.Graphics.Color color)
+        {
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
+            {
+                drawable.SetColorFilter(new BlendModeColorFilter(color, BlendMode.SrcAtop));
+            }
+            else
+            {
+                drawable.SetColorFilter(color, PorterDuff.Mode.SrcAtop);
             }
         }
     }

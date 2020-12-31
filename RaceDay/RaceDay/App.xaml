@@ -13,18 +13,53 @@
             <Color x:Key="BlackColor">#000000</Color>
             <Color x:Key="SilverColor">#cccccc</Color>
             <Color x:Key="ErrorColor">#ff5252</Color>
+
+            <Color x:Key="LightPageBackground">#f5f5f5</Color>
+            <Color x:Key="LightLabelColor">#212121</Color>
+            <Color x:Key="LightTextColor">#000000</Color>
+            <Color x:Key="LightHeadingColor">#03A9F4</Color>
+            <Color x:Key="LightButtonBackground">#03A9F4</Color>
+            <Color x:Key="LightPlainButtonBackground">#666</Color>
+            <Color x:Key="LightButtonText">#ffffff</Color>
+            <Color x:Key="LightLabelOrange">#FF9800</Color>
+            <Color x:Key="LightEntryColor">#333</Color>
+            <Color x:Key="LightPlaceholderColor">#666</Color>
+            <Color x:Key="LightLineColor">#666</Color>
+            <Color x:Key="LightErrorColor">#ff5252</Color>
+            <Color x:Key="LightDivideColor">#bdbdbd</Color>
+            <Color x:Key="LightBubbleColor">#999999</Color>
+
+            <Color x:Key="DarkPageBackground">#171F2A</Color>
+            <Color x:Key="DarkLabelColor">#ffffff</Color>
+            <Color x:Key="DarkTextColor">#6C7B89</Color>
+            <Color x:Key="DarkHeadingColor">#028bca</Color>
+            <Color x:Key="DarkButtonBackground">#028bca</Color>
+            <Color x:Key="DarkPlainButtonBackground">#404040</Color>
+            <Color x:Key="DarkButtonText">#ffffff</Color>
+            <Color x:Key="DarkLabelOrange">#e68a00</Color>
+            <Color x:Key="DarkEntryColor">#a9b3bc</Color>
+            <Color x:Key="DarkPlaceholderColor">#657481</Color>
+            <Color x:Key="DarkLineColor">#cccccc</Color>
+            <Color x:Key="DarkErrorColor">#ff0000</Color>
+            <Color x:Key="DarkDivideColor">#6c6c6c</Color>
+            <Color x:Key="DarkBubbleColor">#666666</Color>
+
             <Style x:Key="PageStyle" TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="#f5f5f5" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPageBackground}, Dark={StaticResource DarkPageBackground}}" />
             </Style>
             <Style x:Key="FontColor" TargetType="Label">
-                <Setter Property="TextColor" Value="#212121" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelColor}, Dark={StaticResource DarkLabelColor}}" />
             </Style>
             <Style x:Key="SmallLabel" TargetType="Label">
-                <Setter Property="TextColor">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightTextColor}, Dark={StaticResource DarkLabelColor}}" />
+                <Setter Property="FontSize">
                     <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
+                        <OnPlatform x:TypeArguments="x:Double" iOS="15" />
                     </Setter.Value>
                 </Setter>
+            </Style>
+            <Style x:Key="SmallOrangeLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelOrange}, Dark={StaticResource DarkLabelOrange}}" />
                 <Setter Property="FontSize">
                     <Setter.Value>
                         <OnPlatform x:TypeArguments="x:Double" iOS="15" />
@@ -32,11 +67,7 @@
                 </Setter>
             </Style>
             <Style x:Key="MediumLabel" TargetType="Label">
-                <Setter Property="TextColor">
-                    <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelColor}, Dark={StaticResource DarkLabelColor}}" />
                 <Setter Property="FontSize">
                     <Setter.Value>
                         <OnPlatform x:TypeArguments="x:Double" iOS="17" />
@@ -44,49 +75,70 @@
                 </Setter>
             </Style>
             <Style x:Key="LargeLabel" TargetType="Label">
-                <Setter Property="TextColor">
-                    <Setter.Value>
-                        <OnPlatform x:TypeArguments="Color" iOS="#212121" />
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelColor}, Dark={StaticResource DarkLabelColor}}" />
                 <Setter Property="FontSize">
                     <Setter.Value>
                         <OnPlatform x:TypeArguments="x:Double" iOS="20" />
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="HeadingLabel" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightHeadingColor}, Dark={StaticResource DarkHeadingColor}}" />
+                <Setter Property="FontSize" Value="Medium" />
+                <Setter Property="Margin" Value="0,5,0,20" />
+                <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+            </Style>
+            <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelColor}, Dark={StaticResource DarkLabelColor}}" />
+                <Setter Property="Margin" Value="5,0,5,0" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+            </Style>
             <Style x:Key="LoginButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#03A9F4" />
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightButtonBackground}, Dark={StaticResource DarkButtonBackground}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonText}, Dark={StaticResource DarkButtonText}}" />
                 <Setter Property="BorderRadius" Value="0" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="0,20,0,20" />
                 <Setter Property="Padding" Value="60,10,60,10" />
             </Style>
+            <Style x:Key="DefaultButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightButtonBackground}, Dark={StaticResource DarkButtonBackground}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonText}, Dark={StaticResource DarkButtonText}}" />
+            </Style>
+            <Style x:Key="PlainButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightPlainButtonBackground}, Dark={StaticResource DarkPlainButtonBackground}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonText}, Dark={StaticResource DarkButtonText}}" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />                
+            </Style>
+            <Style x:Key="OKButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightButtonBackground}, Dark={StaticResource DarkButtonBackground}}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightButtonText}, Dark={StaticResource DarkButtonText}}" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>            
             <Style x:Key="label" TargetType="Label">
-                <Setter Property="TextColor">
-                    <OnPlatform x:TypeArguments="Color" iOS="#212121" Android="#999" />
-                </Setter>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightLabelColor}, Dark={StaticResource DarkLabelColor}}" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="0,10,0,0" />
             </Style>
             <Style x:Key="field" TargetType="Entry">
-                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightEntryColor}, Dark={StaticResource DarkEntryColor}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
             <Style x:Key="EntryStyle" TargetType="Entry">
-                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightEntryColor}, Dark={StaticResource DarkEntryColor}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
                 <Setter Property="FontSize" Value="16" />
                 <Setter Property="behaviors:LineColorBehavior.ApplyLineColor" Value="True" />
-                <Setter Property="behaviors:LineColorBehavior.LineColor">
-                    <OnPlatform x:TypeArguments="Color" iOS="{StaticResource SilverColor}" Android="{StaticResource BlackColor}" />
-                </Setter>
+                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{AppThemeBinding Light={StaticResource LightLineColor}, Dark={StaticResource DarkLineColor}}" />
                 <Setter Property="HeightRequest">
                     <OnPlatform x:TypeArguments="x:Double" iOS="30" Android="40" />
                 </Setter>
             </Style>
             <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
-                <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightErrorColor}, Dark={StaticResource DarkErrorColor}}" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
         </ResourceDictionary>

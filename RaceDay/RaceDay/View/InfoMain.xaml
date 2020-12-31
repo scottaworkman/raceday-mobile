@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
-             x:Class="RaceDay.View.InfoMain">
+             x:Class="RaceDay.View.InfoMain"
+             Style="{DynamicResource PageStyle}">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
                 iOS="10, 20, 10, 10" />
@@ -14,39 +15,39 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackLayout Padding="10">
-                <Image Source="Logo.png" HorizontalOptions="Center" Margin="0,20,0,20" />
+                <Image Source="{AppThemeBinding Light=Logo.png, Dark=DarkLogo.png}" HorizontalOptions="Center" Margin="0,20,0,20" />
             </StackLayout>
             <ScrollView Grid.Row="1" Grid.Column="0">
                 <StackLayout Padding="10">
-                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,0" FontSize="Medium" Text="Enter your JYMF RaceDay credentials below." Style="{StaticResource FontColor}" />
-                    <Label HorizontalTextAlignment="Center" Margin="0,0,0,20" FontSize="Small" Text="Use Forgot Password if no password set or you need it reset." Style="{StaticResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,20,0,0" FontSize="Medium" Text="Enter your JYMF RaceDay credentials below." Style="{DynamicResource FontColor}" />
+                    <Label HorizontalTextAlignment="Center" Margin="0,0,0,20" FontSize="Small" Text="Use Forgot Password if no password set or you need it reset." Style="{DynamicResource FontColor}" />
                     <ActivityIndicator IsRunning="{Binding IsBusy,Mode=OneWay}" IsVisible="{Binding IsBusy}" />
-                    <Label Text="Email" Style="{StaticResource label}" />
-                    <Entry x:Name="EmailEntry" HorizontalOptions="Fill" Placeholder="Email address" Keyboard="Email" Style="{StaticResource EntryStyle}" Text="{Binding Email.Value}">
+                    <Label Text="Email" Style="{DynamicResource label}" />
+                    <Entry x:Name="EmailEntry" HorizontalOptions="Fill" Placeholder="Email address" Keyboard="Email" Style="{DynamicResource EntryStyle}" Text="{Binding Email.Value}">
                         <Entry.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEmailCommand}" />
                         </Entry.Behaviors>
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding Email.IsValid}" Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{AppThemeBinding Light={StaticResource LightErrorColor}, Dark={StaticResource DarkErrorColor}}" />
                             </DataTrigger>
                         </Entry.Triggers>
                     </Entry>
-                    <Label Text="Password" Style="{StaticResource label}" />
-                    <Entry x:Name="PasswordEntry" HorizontalOptions="Fill" Placeholder="Password" IsPassword="True" Style="{StaticResource EntryStyle}" Text="{Binding Password.Value}">
+                    <Label Text="Password" Style="{DynamicResource label}" />
+                    <Entry x:Name="PasswordEntry" HorizontalOptions="Fill" Placeholder="Password" IsPassword="True" Style="{DynamicResource EntryStyle}" Text="{Binding Password.Value}">
                         <Entry.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidatePasswordCommand}" />
                         </Entry.Behaviors>
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding Password.IsValid}" Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{AppThemeBinding Light={StaticResource LightErrorColor}, Dark={StaticResource DarkErrorColor}}" />
                             </DataTrigger>
                         </Entry.Triggers>
                     </Entry>
-                    <Label x:Name="ErrorMessage" HorizontalOptions="CenterAndExpand" Style="{StaticResource ValidationErrorLabelStyle}" Text="{Binding ErrorMessage}" IsVisible="{Binding ShowError}" />
-                    <Button x:Name="LoginButton" HorizontalOptions="Center" Text="Login" Style="{StaticResource LoginButton}" />
-                    <Label Text="Forgot Password" x:Name="ForgotLabel" TextColor="#03A9F4" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,10" />
-                    <Label Text="Register Account" x:Name="RegisterLabel" TextColor="#03A9F4" FontSize="Medium" HorizontalOptions="Center" />
+                    <Label x:Name="ErrorMessage" HorizontalOptions="CenterAndExpand" Style="{DynamicResource ValidationErrorLabelStyle}" Text="{Binding ErrorMessage}" IsVisible="{Binding ShowError}" />
+                    <Button x:Name="LoginButton" HorizontalOptions="Center" Text="Login" Style="{DynamicResource LoginButton}" />
+                    <Label Text="Forgot Password" x:Name="ForgotLabel" TextColor="{AppThemeBinding Light={StaticResource LightHeadingColor}, Dark={StaticResource DarkHeadingColor}}" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,10" />
+                    <Label Text="Register Account" x:Name="RegisterLabel" TextColor="{AppThemeBinding Light={StaticResource LightHeadingColor}, Dark={StaticResource DarkHeadingColor}}" FontSize="Medium" HorizontalOptions="Center" />
                 </StackLayout>
             </ScrollView>
         </Grid>

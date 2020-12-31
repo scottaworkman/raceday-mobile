@@ -61,12 +61,13 @@ namespace RaceDay.View
             {
                 vm.IsValid = false;
                 vm.ErrorMessage = $"Password is being sent to {vm.Email.Value}";
-                ErrorMessage.TextColor = Color.ForestGreen;
+                ErrorMessage.TextColor = (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Light || (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Unspecified && Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Light) ? Color.ForestGreen : Color.White);
             }
             else
             {
                 vm.ErrorMessage = $"Unable to find password for {vm.Email.Value}";
                 vm.Email.IsValid = false;
+                ErrorMessage.TextColor = (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Light || (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Unspecified && Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Light) ? Color.FromHex("#ff5252") : Color.FromHex("#ff0000"));
             }
             vm.IsBusy = false;
         }

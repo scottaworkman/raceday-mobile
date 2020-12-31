@@ -4,55 +4,19 @@
              xmlns:controls="clr-namespace:RaceDay.Helpers"
              xmlns:converters="clr-namespace:RaceDay.Converters"
              xmlns:behaviors="clr-namespace:RaceDay.Behaviors"
-             x:Class="RaceDay.View.AddEvent">
+             x:Class="RaceDay.View.AddEvent"
+             Style="{DynamicResource PageStyle}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
             <converters:BooleanInverseConverter x:Key="BooleanInverseConverter" />
-            <Style x:Key="plainButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#666" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="BorderRadius" Value="0" />
-                <Setter Property="FontSize" Value="18" />
-            </Style>
-            <Style x:Key="okButton" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#03A9F4" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="BorderRadius" Value="0" />
-                <Setter Property="FontSize" Value="18" />
-            </Style>
-            <Style x:Key="label" TargetType="Label">
-                <Setter Property="TextColor">
-                    <OnPlatform x:TypeArguments="Color" iOS="#212121" Android="#999" />
-                </Setter>
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="Margin" Value="0,10,0,0" />
-            </Style>
-            <Style x:Key="field" TargetType="Entry">
-                <Setter Property="TextColor" Value="#333" />
-                <Setter Property="FontSize" Value="16" />
-            </Style>
-            <Style x:Key="EntryStyle" TargetType="Entry">
-                <Setter Property="TextColor" Value="#333" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="behaviors:LineColorBehavior.ApplyLineColor" Value="True" />
-                <Setter Property="behaviors:LineColorBehavior.LineColor">
-                    <OnPlatform x:TypeArguments="Color" iOS="{StaticResource SilverColor}" Android="{StaticResource BlackColor}" />
-                </Setter>
-                <Setter Property="HeightRequest">
-                    <OnPlatform x:TypeArguments="x:Double" iOS="30" Android="40" />
-                </Setter>
-            </Style>
-            <Style x:Key="ValidationErrorLabelStyle" TargetType="{x:Type Label}">
-                <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
-                <Setter Property="FontSize" Value="16" />
-            </Style>
             <Style x:Key="datePicker" TargetType="controls:FontDatePicker">
-                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightEntryColor}, Dark={StaticResource DarkEntryColor}}" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
             <Style x:Key="multiLine" TargetType="controls:ExpandableEditor">
-                <Setter Property="TextColor" Value="#333" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightEntryColor}, Dark={StaticResource DarkEntryColor}}" />
+                <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource LightPlaceholderColor}, Dark={StaticResource DarkPlaceholderColor}}" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
         </ResourceDictionary>
@@ -73,38 +37,38 @@
             </Grid.ColumnDefinitions>
             <ScrollView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <StackLayout Padding="10">
-                    <Label Text="Name" Style="{StaticResource label}" />
-                    <Entry x:Name="txtEventName" HorizontalOptions="Fill" Placeholder="Event Name" Style="{StaticResource EntryStyle}" Text="{Binding EventName.Value}">
+                    <Label Text="Name" Style="{DynamicResource label}" />
+                    <Entry x:Name="txtEventName" HorizontalOptions="Fill" Placeholder="Event Name" Style="{DynamicResource EntryStyle}" Text="{Binding EventName.Value}">
                         <Entry.Behaviors>
                             <behaviors:EventToCommandBehavior EventName="TextChanged" Command="{Binding ValidateEventNameCommand}" />
                         </Entry.Behaviors>
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding EventName.IsValid}" Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{DynamicResource ErrorColor}" />
                             </DataTrigger>
                         </Entry.Triggers>
                     </Entry>
-                    <Label Text="{Binding EventName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" IsVisible="{Binding EventName.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
-                    <Label Text="Date" Style="{StaticResource label}" />
-                    <controls:FontDatePicker x:Name="txtDate" Style="{StaticResource datePicker}" Date="{Binding EventDate.Value}" />
-                    <Label Text="{Binding EventDate.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" IsVisible="{Binding EventDate.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
-                    <Label Text="Location" Style="{StaticResource label}" />
-                    <Entry x:Name="txtLocation" HorizontalOptions="Fill" Placeholder="City, State or Venue" Style="{StaticResource EntryStyle}" Text="{Binding EventLocation.Value}" />
-                    <Label Text="Url" Style="{StaticResource label}" />
-                    <Entry x:Name="txtUrl" HorizontalOptions="Fill" Keyboard="Url" Placeholder="http://www.xyz.com/eventinfo" Style="{StaticResource EntryStyle}" Text="{Binding EventUrl.Value}">
+                    <Label Text="{Binding EventName.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{DynamicResource ValidationErrorLabelStyle}" IsVisible="{Binding EventName.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
+                    <Label Text="Date" Style="{DynamicResource label}" />
+                    <controls:FontDatePicker x:Name="txtDate" Style="{DynamicResource datePicker}" Date="{Binding EventDate.Value}" />
+                    <Label Text="{Binding EventDate.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{DynamicResource ValidationErrorLabelStyle}" IsVisible="{Binding EventDate.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
+                    <Label Text="Location" Style="{DynamicResource label}" />
+                    <Entry x:Name="txtLocation" HorizontalOptions="Fill" Placeholder="City, State or Venue" Style="{DynamicResource EntryStyle}" Text="{Binding EventLocation.Value}" />
+                    <Label Text="Url" Style="{DynamicResource label}" />
+                    <Entry x:Name="txtUrl" HorizontalOptions="Fill" Keyboard="Url" Placeholder="http://www.xyz.com/eventinfo" Style="{DynamicResource EntryStyle}" Text="{Binding EventUrl.Value}">
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding EventUrl.IsValid}" Value="False">
-                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                                <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{AppThemeBinding Light={StaticResource LightErrorColor}, Dark={StaticResource DarkErrorColor}}" />
                             </DataTrigger>
                         </Entry.Triggers>
                     </Entry>
-                    <Label Text="{Binding EventUrl.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{StaticResource ValidationErrorLabelStyle}" IsVisible="{Binding EventUrl.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
-                    <Label Text="Description" Style="{StaticResource label}" />
-                    <controls:ExpandableEditor x:Name="txtDescription" Placeholder="Event Details" HorizontalOptions="Fill" Style="{StaticResource multiLine}" Text="{Binding EventDescription.Value}" />
+                    <Label Text="{Binding EventUrl.Errors, Converter={StaticResource FirstValidationErrorConverter}}" Style="{DynamicResource ValidationErrorLabelStyle}" IsVisible="{Binding EventUrl.IsValid, Converter={StaticResource BooleanInverseConverter}}" />
+                    <Label Text="Description" Style="{DynamicResource label}" />
+                    <controls:ExpandableEditor x:Name="txtDescription" Placeholder="Event Details" HorizontalOptions="Fill" Style="{DynamicResource multiLine}" Text="{Binding EventDescription.Value}" />
                 </StackLayout>
             </ScrollView>
-            <Button x:Name="btnCancel" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Cancel" Style="{StaticResource plainButton}" />
-            <Button x:Name="btnOk" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" Text="Save" Style="{StaticResource okButton}" />
+            <Button x:Name="btnCancel" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="0" Text="Cancel" Style="{DynamicResource PlainButton}" />
+            <Button x:Name="btnOk" HorizontalOptions="FillAndExpand" Grid.Row="1" Grid.Column="1" Text="Save" Style="{DynamicResource OKButton}" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
