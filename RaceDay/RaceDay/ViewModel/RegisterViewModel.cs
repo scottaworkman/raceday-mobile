@@ -198,7 +198,7 @@ namespace RaceDay.ViewModel
             }
             else
             {
-                return ValidateFirstName() & ValidateLastName() & ValidateEmail() && ValidatePassword() & ValidateConfirmPassword() & ValidateGroupCode();
+                return ValidateFirstName() & ValidateLastName() & ValidateEmail() & ValidatePassword() & ValidateConfirmPassword() & ValidateGroupCode();
             }
         }
 

@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using RaceDay.Helpers;
+using Xamarin.Essentials;
 
 namespace RaceDay.View
 {
@@ -30,7 +31,7 @@ namespace RaceDay.View
             {
                 ToolbarItems.Add(new ToolbarItem()
                 {
-                    Icon = "ic_create.png",
+                    IconImageSource = "ic_create.png",
                     Text = "Edit",
                     Order = ToolbarItemOrder.Primary,
                     Command = new Command(() =>
@@ -44,7 +45,7 @@ namespace RaceDay.View
             {
                 ToolbarItems.Add(new ToolbarItem()
                 {
-                    Icon = "ic_delete.png",
+                    IconImageSource = "ic_delete.png",
                     Text = "Delete",
                     Order = ToolbarItemOrder.Primary,
                     Command = new Command(() =>
@@ -60,9 +61,9 @@ namespace RaceDay.View
             UrlLabel.IsVisible = !string.IsNullOrEmpty(selectedEvent.Url);
             UrlLabel.GestureRecognizers.Add(new TapGestureRecognizer
             {
-                Command = new Command(() =>
+                Command = new Command(async () =>
                 {
-                    Device.OpenUri(new Uri(UrlLabel.Text));
+                    await Launcher.TryOpenAsync(new Uri(UrlLabel.Text));
                 })
             });
             if (!CrossConnectivity.Current.IsConnected)

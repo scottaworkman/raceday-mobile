@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RaceDay.Model;
 using RaceDay.ViewModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using RaceDay.Helpers;
+using System.ComponentModel;
 
 namespace RaceDay.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AllEvents : ContentPage
+    public partial class AllEvents : ContentPage, INotifyPropertyChanged
     {
         public AllEvents(EventsViewModel vm)
         {
             InitializeComponent();
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
+            vm.IsBusy = false;
             BindingContext = vm;
 
             // Floating Action Button layout
@@ -29,8 +28,10 @@ namespace RaceDay.View
                 var fab = new FloatingActionButtonView()
                 {
                     ImageName = "ic_add.png",
-                    ColorNormal = Color.FromHex("ff03A9F4"),
-                    ColorRipple = Color.FromHex("fffb8c00"),
+                    ColorNormal = (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Light ||
+                                    (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Unspecified && Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Light) ? Color.FromHex("ff03A9F4") : Color.FromHex("ff028bca")),
+                    ColorRipple = (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Light ||
+                                    (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Unspecified && Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Light) ? Color.FromHex("fffb8c00") : Color.FromHex("c0fb8c00")),
                 };
                 vm.FAButton = fab;
 
@@ -52,29 +53,23 @@ namespace RaceDay.View
 
                 absLayout.Children.Add(fab);
             }
+            else
+            {
+                // Set page background to same as dividing lines for iOS to show
+                //
+                BackgroundColor = (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Light ||
+                                    (Xamarin.Forms.Application.Current.UserAppTheme == OSAppTheme.Unspecified && Xamarin.Forms.Application.Current.RequestedTheme == OSAppTheme.Light) ? Color.FromHex("#bdbdbd") : Color.FromHex("#6c6c6c"));
+            }
         }
 
-        protected override void OnAppearing()
+        private async void CollectionViewEvents_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            base.OnAppearing();
-            ListViewEvents.ItemSelected += ListViewEvents_ItemSelected;
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            ListViewEvents.ItemSelected -= ListViewEvents_ItemSelected;
-        }
-
-        private async void ListViewEvents_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            var race = e.SelectedItem as Event;
+            var race = e.CurrentSelection.FirstOrDefault() as Event;
             if (race == null)
                 return;
 
+            ((CollectionView)sender).SelectedItem = null;
             await Navigation.PushAsync(new DetailsPage(race, BindingContext as EventsViewModel));
-
-            ListViewEvents.SelectedItem = null;
         }
 
         /// <summary>
@@ -103,7 +98,7 @@ namespace RaceDay.View
             }
             finally
             {
-                ListViewEvents.SelectedItem = null;
+                //ListViewEvents.SelectedItem = null;
             }
         }
 
@@ -129,7 +124,7 @@ namespace RaceDay.View
             }
             finally
             {
-                ListViewEvents.SelectedItem = null;
+                //ListViewEvents.SelectedItem = null;
             }
         }
 
@@ -163,7 +158,7 @@ namespace RaceDay.View
                     var menu = new MenuItem()
                     {
                         Text = "Edit",
-                        Icon = "ic_create.png",
+                        IconImageSource = "ic_create.png",
                         IsDestructive = false,
                         CommandParameter = eventCell.BindingContext
                     };
@@ -176,7 +171,7 @@ namespace RaceDay.View
                     var menu = new MenuItem()
                     {
                         Text = "Delete",
-                        Icon = "ic_delete.png",
+                        IconImageSource = "ic_delete.png",
                         IsDestructive = true,
                         CommandParameter = eventCell.BindingContext
                     };

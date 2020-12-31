@@ -25,14 +25,10 @@ namespace RaceDay.iOS
             CookieReset reset = new CookieReset();
             reset.Clear();
 
+            global::Xamarin.Forms.Forms.SetFlags(new string[] { "AppTheme_Experimental", "RadioButton_Experimental" });
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
 
-            // This sets the colors for the navigation bar to match our Material theme
-            //
-            UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(255, 152, 0);
-            UINavigationBar.Appearance.TintColor = UIColor.White;
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes() { TextColor = UIColor.White });
+            LoadApplication(new App());
 
             // The same material theme settings for Tab bar/switches. Rather than fight iOS themes, leave the background of the tab as white 
             // instead of blue as the gray tint color for unselected items can't be well seen and not overridable
