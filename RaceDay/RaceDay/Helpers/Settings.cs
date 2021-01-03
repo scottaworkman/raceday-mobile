@@ -3,6 +3,7 @@ using System;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using RaceDay.Model;
+using Xamarin.Forms;
 
 namespace RaceDay.Helpers
 {
@@ -52,6 +53,8 @@ namespace RaceDay.Helpers
         private const string UserEmailKey = "useremail_key";
 
         private const string UserPasswordKey = "userpassword_key";
+
+        private const string AppThemeKey = "apptheme_key";
 
         // Access Token authorizing REST client to the server API
         //
@@ -190,6 +193,25 @@ namespace RaceDay.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(UserPasswordKey, value);
+            }
+        }
+
+        public static OSAppTheme AppTheme
+        {
+            get
+            {
+                var defaultTheme = Application.Current.RequestedTheme == OSAppTheme.Light ? 0 : 1;
+                var intTheme = AppSettings.GetValueOrDefault(AppThemeKey, defaultTheme);
+                return (intTheme == 0 ? OSAppTheme.Light : intTheme == 1 ? OSAppTheme.Dark : OSAppTheme.Unspecified);
+            }
+            set
+            {
+                if (value == OSAppTheme.Light)
+                    AppSettings.AddOrUpdateValue(AppThemeKey, 0);
+                else if (value == OSAppTheme.Dark)
+                    AppSettings.AddOrUpdateValue(AppThemeKey, 1);
+                else
+                    AppSettings.AddOrUpdateValue(AppThemeKey, 2);
             }
         }
 

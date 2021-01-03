@@ -22,7 +22,7 @@ namespace RaceDay.Droid
 
             base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.SetFlags("FastRenderers_Experimental");
+            global::Xamarin.Forms.Forms.SetFlags(new string[] { "AppTheme_Experimental", "RadioButton_Experimental" });
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
             Android.Webkit.CookieManager.Instance.RemoveAllCookies(null);

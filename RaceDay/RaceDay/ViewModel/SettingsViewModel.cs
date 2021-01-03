@@ -22,6 +22,9 @@ namespace RaceDay.ViewModel
         public bool NotifyNewRace { get; set; }
         public bool NotifyParticipantJoins { get; set; }
         public string UserName { get; set; }
+        public bool ThemeLight { get; set; }
+        public bool ThemeDark { get; set; }
+        public bool ThemeSystem { get; set; }
 
         public SettingsViewModel()
         {
