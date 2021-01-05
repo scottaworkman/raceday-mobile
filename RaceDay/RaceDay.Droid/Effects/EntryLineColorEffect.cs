@@ -22,6 +22,11 @@ namespace RaceDay.Droid.Effects
     {
         EditText control;
 
+        public EntryLineColorEffect()
+        {
+
+        }
+
         protected override void OnAttached()
         {
             try
