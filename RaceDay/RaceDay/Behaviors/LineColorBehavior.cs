@@ -41,9 +41,7 @@ namespace RaceDay.Behaviors
 
         private static void OnApplyLineColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var view = bindable as Xamarin.Forms.View;
-
-            if (view == null)
+            if (!(bindable is Xamarin.Forms.View view))
             {
                 return;
             }
@@ -52,7 +50,7 @@ namespace RaceDay.Behaviors
 
             if (hasLine)
             {
-                view.Effects.Add(new EntryLineColorEffect());
+                view.Effects.Add(item: new EntryLineColorEffect());
             }
             else
             {
