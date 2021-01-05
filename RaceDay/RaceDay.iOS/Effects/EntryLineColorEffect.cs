@@ -22,9 +22,8 @@ namespace RaceDay.iOS.Effects
     {
         UITextField control;
 
-        public EntryLineColorEffect()
+        public EntryLineColorEffect() : base()
         {
-
         }
 
         protected override void OnAttached()
