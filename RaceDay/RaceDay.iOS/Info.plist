@@ -26,8 +26,6 @@
 	<string>JYMF RaceDay</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.workmanfamily.jymfraceday</string>
-	<key>CFBundleVersion</key>
-	<string>27.0</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon-60@2x</string>
@@ -50,8 +48,6 @@
 	<string>LaunchScreen</string>
 	<key>XSAppIconAssets</key>
 	<string>Resources/Media.xcassets/AppIcons.appiconset</string>
-	<key>CFBundleShortVersionString</key>
-	<string>2.0.27</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To attach a photo to your feedback, we need access to your Photo Library.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -62,5 +58,9 @@
 	<false/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
+	<key>CFBundleVersion</key>
+	<string>28.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0.28</string>
 </dict>
 </plist>
