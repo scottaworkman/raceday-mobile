@@ -9,6 +9,7 @@ using UIKit;
 [assembly: Xamarin.Forms.Dependency(typeof(RaceDay.iOS.CookieReset))]
 namespace RaceDay.iOS
 {
+    [Preserve(AllMembers = true)]
     public class CookieReset : ICookieReset
     {
         public void Clear()

@@ -11,11 +11,13 @@ using Xamarin.Forms;
 [assembly: Xamarin.Forms.Dependency(typeof(RaceDay.iOS.Snackbar))]
 namespace RaceDay.iOS
 {
+    [Preserve(AllMembers = true)]
     public class SnackbarResult : ISnackbarResult
     {
         public SnackbarAction Action { get; set; }
     }
 
+    [Preserve(AllMembers = true)]
     public class Snackbar : ISnackbar
     {
         public Snackbar() { }

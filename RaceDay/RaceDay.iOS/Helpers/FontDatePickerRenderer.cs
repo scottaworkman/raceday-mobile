@@ -7,12 +7,14 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using RaceDay.iOS;
 using UIKit;
+using Foundation;
 
 [assembly: ExportRenderer(typeof(RaceDay.Helpers.FontDatePicker), typeof(FontDatePickerRenderer))]
 
 namespace RaceDay.iOS
 {
-   public class FontDatePickerRenderer : DatePickerRenderer
+    [Preserve(AllMembers = true)]
+    public class FontDatePickerRenderer : DatePickerRenderer
     {
         protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.DatePicker> e)
         {

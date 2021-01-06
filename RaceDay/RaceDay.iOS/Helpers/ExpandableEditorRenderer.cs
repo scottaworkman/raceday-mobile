@@ -8,11 +8,13 @@ using Xamarin.Forms.Platform.iOS;
 using RaceDay.iOS;
 using UIKit;
 using RaceDay.Helpers;
+using Foundation;
 
 [assembly: ExportRenderer(typeof(ExpandableEditor), typeof(ExpandableEditorRenderer))]
 
 namespace RaceDay.iOS
 {
+    [Preserve(AllMembers = true)]
    public class ExpandableEditorRenderer : EditorRenderer
     {
         private string Placeholder { get; set; }
