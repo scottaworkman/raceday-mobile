@@ -11,6 +11,7 @@ using Xamarin.Forms;
 [assembly: Dependency(typeof(RaceDay.iOS.Helpers.Statusbar))]
 namespace RaceDay.iOS.Helpers
 {
+    [Preserve(AllMembers = true)]
     public class Statusbar : IStatusBarPlatformSpecific
     {
         public Statusbar()

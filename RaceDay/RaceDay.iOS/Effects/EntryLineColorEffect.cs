@@ -1,5 +1,6 @@
 ﻿using CoreAnimation;
 using CoreGraphics;
+using Foundation;
 using RaceDay.Behaviors;
 using RaceDay.iOS.Effects;
 using System;
@@ -18,6 +19,7 @@ namespace RaceDay.iOS.Effects
     /// Used with Custom Validation to allow for the drawing of the line of the Entry control in a custom color based on validation rules.
     /// </summary>
     /// 
+    [Preserve(AllMembers = true)]
     public class EntryLineColorEffect : PlatformEffect
     {
         UITextField control;
