@@ -7,6 +7,7 @@ using UIKit;
 [assembly: Xamarin.Forms.Dependency(typeof(RaceDay.iOS.Toast))]
 namespace RaceDay.iOS
 {
+    [Preserve(AllMembers = true)]
     public class Toast : IToast
     {
         const double LONG_DELAY = 3.5;
